@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RUNAMOKMOTO — Ride Unleashed</title>
+  <style>
+    :root {
+      --orange: #f04e1a;
+      --dark: #111111;
+      --darker: #0a0a0a;
+      --card: #1a1a1a;
+      --border: #2a2a2a;
+      --text: #e8e8e8;
+      --muted: #888;
+      --green: #22c55e;
+      --red: #ef4444;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--darker); color: var(--text); min-height: 100vh; }
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(10,10,10,0.95); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 1.5rem; height: 60px;
+    }
+    .nav-logo { font-size: 1.4rem; font-weight: 900; letter-spacing: .08em; color: var(--orange); text-decoration: none; }
+    .nav-links { display: flex; gap: 1.5rem; }
+    .nav-links a { color: var(--muted); text-decoration: none; font-size: .9rem; transition: color .2s; }
+    .nav-links a:hover { color: var(--text); }
+    .admin-btn { background: none; border: 1px solid var(--border); color: var(--muted); padding: .35rem .8rem; border-radius: 6px; font-size: .8rem; cursor: pointer; transition: all .2s; }
+    .admin-btn:hover { border-color: var(--orange); color: var(--orange); }
+    .hero {
+      position: relative; overflow: hidden;
+      padding: 7rem 1.5rem 5rem;
+      background: linear-gradient(135deg, #0a0a0a 0%, #1a0a00 50%, #0a0a0a 100%);
+      text-align: center;
+    }
+    .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(240,78,26,.18) 0%, transparent 70%); }
+    .hero-eyebrow { font-size: .8rem; letter-spacing: .25em; color: var(--orange); text-transform: uppercase; margin-bottom: 1rem; position: relative; }
+    .hero h1 { font-size: clamp(3rem, 10vw, 7rem); font-weight: 900; letter-spacing: -.02em; line-height: .95; position: relative; }
+    .hero h1 span { color: var(--orange); }
+    .hero-sub { margin-top: 1.5rem; font-size: clamp(1rem, 2.5vw, 1.25rem); color: var(--muted); max-width: 560px; margin-inline: auto; line-height: 1.6; position: relative; }
+    .hero-cta { margin-top: 2.5rem; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; position: relative; }
+    .btn-primary { background: var(--orange); color: #fff; border: none; padding: .8rem 2rem; border-radius: 8px; font-size: 1rem; font-weight: 700; cursor: pointer; text-decoration: none; transition: transform .15s, box-shadow .15s; }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(240,78,26,.4); }
+    .btn-outline { background: none; color: var(--text); border: 1px solid var(--border); padding: .8rem 2rem; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; text-decoration: none; transition: border-color .2s; }
+    .btn-outline:hover { border-color: var(--orange); }
+    .about { padding: 5rem 1.5rem; max-width: 900px; margin-inline: auto; display: grid; gap: 2.5rem; grid-template-columns: 1fr 1fr; }
+    @media (max-width: 640px) { .about { grid-template-columns: 1fr; } }
+    .about-heading { grid-column: 1 / -1; font-size: clamp(1.8rem, 5vw, 2.8rem); font-weight: 900; line-height: 1.1; }
+    .about-heading span { color: var(--orange); }
+    .about-block { display: flex; flex-direction: column; gap: .75rem; }
+    .about-block h3 { font-size: 1rem; font-weight: 700; color: var(--orange); letter-spacing: .05em; }
+    .about-block p { color: var(--muted); line-height: 1.7; font-size: .95rem; }
+    .section-header { text-align: center; padding: 4rem 1.5rem 2rem; }
+    .section-header h2 { font-size: clamp(1.8rem, 5vw, 2.5rem); font-weight: 900; }
+    .section-header h2 span { color: var(--orange); }
+    .section-header p { color: var(--muted); margin-top: .5rem; font-size: .95rem; }
+    .catalog { padding: 0 1rem 4rem; max-width: 1200px; margin-inline: auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.25rem; }
+    .scooter-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; transition: transform .2s, border-color .2s; }
+    .scooter-card:hover { transform: translateY(-4px); border-color: var(--orange); }
+    .card-image { height: 180px; background: linear-gradient(135deg, #1e1e1e, #0d0d0d); display: flex; align-items: center; justify-content: center; font-size: 5rem; border-bottom: 1px solid var(--border); }
+    .card-body { padding: 1.25rem; }
+    .card-top { display: flex; justify-content: space-between; align-items: flex-start; gap: .5rem; margin-bottom: .75rem; }
+    .card-name { font-size: 1.1rem; font-weight: 800; line-height: 1.2; }
+    .card-brand { font-size: .75rem; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; }
+    .stock-badge { font-size: .75rem; font-weight: 700; padding: .25rem .6rem; border-radius: 20px; white-space: nowrap; flex-shrink: 0; }
+    .in-stock { background: rgba(34,197,94,.15); color: var(--green); border: 1px solid rgba(34,197,94,.3); }
+    .out-stock { background: rgba(239,68,68,.15); color: var(--red); border: 1px solid rgba(239,68,68,.3); }
+    .specs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem .75rem; margin-bottom: 1rem; }
+    .spec-item label { font-size: .7rem; color: var(--muted); display: block; text-transform: uppercase; letter-spacing: .06em; }
+    .spec-item span { font-size: .85rem; font-weight: 600; }
+    .colors-row { display: flex; align-items: center; gap: .5rem; flex-wrap: wrap; margin-top: .75rem; }
+    .colors-label { font-size: .75rem; color: var(--muted); }
+    .color-dot { width: 18px; height: 18px; border-radius: 50%; border: 2px solid rgba(255,255,255,.2); cursor: default; transition: transform .15s; }
+    .color-dot:hover { transform: scale(1.2); }
+    .contact-section { background: var(--card); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 4rem 1.5rem; text-align: center; }
+    .contact-section h2 { font-size: clamp(1.6rem, 4vw, 2.2rem); font-weight: 900; margin-bottom: .5rem; }
+    .contact-section h2 span { color: var(--orange); }
+    .contact-section > p { color: var(--muted); margin-bottom: 2rem; }
+    .contact-cards { display: flex; gap: 1.25rem; justify-content: center; flex-wrap: wrap; }
+    .contact-card { background: var(--darker); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem 2rem; min-width: 220px; }
+    .contact-card .cc-icon { font-size: 2rem; margin-bottom: .5rem; }
+    .contact-card h3 { font-size: .85rem; color: var(--muted); margin-bottom: .4rem; }
+    .contact-card a { color: var(--orange); font-size: 1.1rem; font-weight: 700; text-decoration: none; }
+    .contact-card a:hover { text-decoration: underline; }
+    footer { text-align: center; padding: 2rem 1.5rem; font-size: .8rem; color: var(--muted); }
+    footer strong { color: var(--orange); }
+    .modal-overlay { position: fixed; inset: 0; z-index: 200; background: rgba(0,0,0,.75); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; padding: 1rem; }
+    .modal { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 2rem; width: 100%; max-width: 560px; max-height: 90vh; overflow-y: auto; }
+    .modal h2 { font-size: 1.4rem; font-weight: 900; margin-bottom: .5rem; }
+    .modal h2 span { color: var(--orange); }
+    .modal > p { color: var(--muted); font-size: .9rem; margin-bottom: 1.5rem; }
+    .form-row { margin-bottom: 1rem; }
+    .form-row label { display: block; font-size: .8rem; font-weight: 600; margin-bottom: .4rem; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+    .form-row input { width: 100%; background: var(--darker); border: 1px solid var(--border); color: var(--text); padding: .65rem .85rem; border-radius: 8px; font-size: .95rem; outline: none; transition: border-color .2s; }
+    .form-row input:focus { border-color: var(--orange); }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    @media (max-width: 480px) { .form-grid { grid-template-columns: 1fr; } }
+    .modal-actions { display: flex; gap: .75rem; justify-content: flex-end; margin-top: 1.5rem; }
+    .btn-cancel { background: none; border: 1px solid var(--border); color: var(--muted); padding: .6rem 1.25rem; border-radius: 8px; font-size: .9rem; cursor: pointer; }
+    .btn-cancel:hover { border-color: var(--text); color: var(--text); }
+    .btn-add { background: var(--orange); color: #fff; border: none; padding: .6rem 1.5rem; border-radius: 8px; font-size: .9rem; font-weight: 700; cursor: pointer; }
+    .lookup-status { font-size: .8rem; padding: .5rem .75rem; border-radius: 6px; margin-top: .4rem; }
+    .lookup-ok { background: rgba(34,197,94,.1); color: var(--green); }
+    .lookup-miss { background: rgba(240,78,26,.1); color: var(--orange); }
+    .lookup-loading { background: rgba(255,255,255,.05); color: var(--muted); }
+    .pin-form { display: flex; flex-direction: column; gap: 1rem; }
+    .pin-error { color: var(--red); font-size: .85rem; text-align: center; }
+    .toast { position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%); background: var(--green); color: #fff; padding: .7rem 1.5rem; border-radius: 8px; font-weight: 700; font-size: .9rem; z-index: 300; animation: toast-in .3s ease; }
+    @keyframes toast-in { from { opacity:0; transform:translate(-50%,20px); } to { opacity:1; transform:translate(-50%,0); } }
+    .empty-state { grid-column: 1 / -1; text-align: center; padding: 5rem 1rem; color: var(--muted); }
+    .empty-state .empty-icon { font-size: 4rem; margin-bottom: 1rem; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="nav-logo">RUNAMOKMOTO</a>
+  <div class="nav-links">
+    <a href="#fleet">Fleet</a>
+    <a href="#about">About</a>
+    <a href="#contact">Contact</a>
+  </div>
+  <button class="admin-btn" id="openAdminBtn">Admin</button>
+</nav>
+
+<section class="hero" id="home">
+  <p class="hero-eyebrow">New England's Premier Scooter Dealer</p>
+  <h1>RUN<span>AMOK</span><br>MOTO</h1>
+  <p class="hero-sub">Life's too short for traffic. Zip through the city, cruise the coast, or carve the backroads — we've got the perfect scooter to set you free.</p>
+  <div class="hero-cta">
+    <a href="#fleet" class="btn-primary">Browse Our Fleet</a>
+    <a href="#contact" class="btn-outline">Talk to Rick</a>
+  </div>
+</section>
+
+<section class="about" id="about">
+  <h2 class="about-heading">We live <span>two wheels</span> every day.</h2>
+  <div class="about-block">
+    <h3>Our Story</h3>
+    <p>Born from a passion for the open road and a love of two-wheeled freedom, RUNAMOKMOTO has been outfitting riders across New England since day one. We're not just a dealership — we're riders who happen to sell scooters.</p>
+  </div>
+  <div class="about-block">
+    <h3>Why Choose Us</h3>
+    <p>Every scooter on our lot is hand-picked for quality, reliability, and pure riding joy. From first-time commuters to weekend warriors, we match every rider to the right machine — no upsells, no pressure, just honest advice.</p>
+  </div>
+  <div class="about-block">
+    <h3>Test Rides Welcome</h3>
+    <p>We encourage you to come by, meet the team, and take a spin. Because the best way to fall in love with a scooter is to actually ride one. Give Rick a call and he'll have one warmed up and waiting.</p>
+  </div>
+  <div class="about-block">
+    <h3>Service &amp; Support</h3>
+    <p>Your ride doesn't end at the sale. Our in-house service team handles everything from oil changes to full tune-ups. We keep your scooter running so you keep running amok.</p>
+  </div>
+</section>
+
+<div class="section-header" id="fleet">
+  <h2>Our <span>Fleet</span></h2>
+  <p>In-stock scooters ready to ride — updated daily.</p>
+</div>
+<div class="catalog" id="catalog"></div>
+
+<section class="contact-section" id="contact">
+  <h2>Ready to <span>Ride?</span></h2>
+  <p>Have questions, want a test ride, or need to check availability? We're here for you.</p>
+  <div class="contact-cards">
+    <div class="contact-card">
+      <div class="cc-icon">📞</div>
+      <h3>Call Rick directly</h3>
+      <a href="tel:+15086667777">(508) 666-7777</a>
+    </div>
+    <div class="contact-card">
+      <div class="cc-icon">📍</div>
+      <h3>Visit the lot</h3>
+      <a href="#contact">New England, USA</a>
+    </div>
+    <div class="contact-card">
+      <div class="cc-icon">🕐</div>
+      <h3>Hours</h3>
+      <a href="#contact">Mon–Sat 9am – 6pm</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <strong>RUNAMOKMOTO</strong> — Ride Unleashed &nbsp;|&nbsp; Call Rick: <a href="tel:+15086667777" style="color:var(--orange)">(508) 666-7777</a>
+  <br><br>&copy; 2025 RUNAMOKMOTO. All rights reserved.
+</footer>
+
+<div id="modal-root"></div>
+<div id="toast-root"></div>
+
+<script>
+var COLOR_MAP = {
+  "red":"#e53e3e","blue":"#3b82f6","white":"#f0f0f0","black":"#1a1a1a",
+  "silver":"#a8a8a8","gray":"#6b6b6b","grey":"#6b6b6b","green":"#22c55e",
+  "yellow":"#ecc94b","orange":"#f04e1a","purple":"#a855f7","pink":"#ec4899",
+  "navy":"#1e3a5f","teal":"#14b8a6","cream":"#f5f0e8","gold":"#d97706",
+  "gunmetal":"#4a5568","chrome":"#cbd5e0","matte black":"#222",
+  "pearl white":"#f8f8f8","candy red":"#dc2626"
+};
+
+var SCOOTER_DB = {
+  "honda pcx 150":   {brand:"Honda",engine:"149cc",power:"12.9 hp",topSpeed:"95 km/h",fuelTank:"8.1 L",weight:"130 kg",colors:["black","white","red","navy"],emoji:"🛵"},
+  "honda pcx":       {brand:"Honda",engine:"124cc",power:"12.6 hp",topSpeed:"95 km/h",fuelTank:"8.1 L",weight:"130 kg",colors:["black","white","red","navy"],emoji:"🛵"},
+  "honda forza 350": {brand:"Honda",engine:"330cc",power:"29 hp",topSpeed:"155 km/h",fuelTank:"11.5 L",weight:"199 kg",colors:["gray","black","silver"],emoji:"🏍️"},
+  "honda dio":       {brand:"Honda",engine:"109cc",power:"7 hp",topSpeed:"75 km/h",fuelTank:"4.5 L",weight:"95 kg",colors:["red","white","black"],emoji:"🛵"},
+  "yamaha nmax":     {brand:"Yamaha",engine:"155cc",power:"15 hp",topSpeed:"110 km/h",fuelTank:"6.6 L",weight:"131 kg",colors:["blue","black","white","red"],emoji:"🛵"},
+  "yamaha nmax 155": {brand:"Yamaha",engine:"155cc",power:"15 hp",topSpeed:"110 km/h",fuelTank:"6.6 L",weight:"131 kg",colors:["blue","black","white","red"],emoji:"🛵"},
+  "yamaha xmax 300": {brand:"Yamaha",engine:"292cc",power:"28 hp",topSpeed:"145 km/h",fuelTank:"13.2 L",weight:"179 kg",colors:["gunmetal","white","black"],emoji:"🏍️"},
+  "yamaha zuma 125": {brand:"Yamaha",engine:"125cc",power:"9.4 hp",topSpeed:"90 km/h",fuelTank:"5.3 L",weight:"105 kg",colors:["black","red","blue"],emoji:"🛵"},
+  "yamaha bws 125":  {brand:"Yamaha",engine:"125cc",power:"9 hp",topSpeed:"90 km/h",fuelTank:"5 L",weight:"108 kg",colors:["black","yellow","white"],emoji:"🛵"},
+  "vespa gts 300":   {brand:"Piaggio (Vespa)",engine:"300cc",power:"23.7 hp",topSpeed:"135 km/h",fuelTank:"9 L",weight:"170 kg",colors:["red","cream","black","silver","navy"],emoji:"🛵"},
+  "vespa primavera": {brand:"Piaggio (Vespa)",engine:"155cc",power:"12.4 hp",topSpeed:"95 km/h",fuelTank:"7 L",weight:"130 kg",colors:["cream","green","silver","red"],emoji:"🛵"},
+  "vespa sprint":    {brand:"Piaggio (Vespa)",engine:"155cc",power:"12.4 hp",topSpeed:"95 km/h",fuelTank:"7 L",weight:"130 kg",colors:["white","red","black","cream"],emoji:"🛵"},
+  "vespa 150":       {brand:"Piaggio (Vespa)",engine:"149cc",power:"12 hp",topSpeed:"95 km/h",fuelTank:"7 L",weight:"125 kg",colors:["cream","red","black"],emoji:"🛵"},
+  "kymco like 150i": {brand:"Kymco",engine:"149cc",power:"13 hp",topSpeed:"95 km/h",fuelTank:"7.5 L",weight:"128 kg",colors:["black","white","green","red"],emoji:"🛵"},
+  "kymco ak 550":    {brand:"Kymco",engine:"550cc",power:"53 hp",topSpeed:"190 km/h",fuelTank:"14.8 L",weight:"236 kg",colors:["black","gray"],emoji:"🏍️"},
+  "sym jet x":       {brand:"SYM",engine:"125cc",power:"9 hp",topSpeed:"85 km/h",fuelTank:"6 L",weight:"110 kg",colors:["red","black","white"],emoji:"🛵"},
+  "sym maxsym tl":   {brand:"SYM",engine:"500cc",power:"45 hp",topSpeed:"180 km/h",fuelTank:"14 L",weight:"230 kg",colors:["black","silver"],emoji:"🏍️"},
+  "piaggio beverly": {brand:"Piaggio",engine:"350cc",power:"35 hp",topSpeed:"160 km/h",fuelTank:"12 L",weight:"197 kg",colors:["gray","black","silver"],emoji:"🏍️"},
+  "piaggio mp3":     {brand:"Piaggio",engine:"350cc",power:"35 hp",topSpeed:"155 km/h",fuelTank:"12 L",weight:"272 kg",colors:["black","gray"],emoji:"🏍️"},
+  "aprilia sr 150":  {brand:"Aprilia",engine:"150cc",power:"14 hp",topSpeed:"100 km/h",fuelTank:"7 L",weight:"115 kg",colors:["black","red","white"],emoji:"🛵"},
+  "niu nqi gt":      {brand:"NIU",engine:"Electric",power:"4 kW",topSpeed:"70 km/h",fuelTank:"N/A (Electric)",weight:"108 kg",colors:["black","white","red"],emoji:"⚡"},
+  "niu mqi+":        {brand:"NIU",engine:"Electric",power:"1.5 kW",topSpeed:"45 km/h",fuelTank:"N/A (Electric)",weight:"82 kg",colors:["black","white","blue"],emoji:"⚡"},
+  "super soco tc":   {brand:"Super Soco",engine:"Electric",power:"3 kW",topSpeed:"75 km/h",fuelTank:"N/A (Electric)",weight:"100 kg",colors:["black","green","red"],emoji:"⚡"}
+};
+
+var inventory = JSON.parse(localStorage.getItem('runamokmoto_inventory') || 'null') || [
+  {id:1,name:"PCX 150",brand:"Honda",engine:"149cc",power:"12.9 hp",topSpeed:"95 km/h",fuelTank:"8.1 L",weight:"130 kg",colors:["black","white","red","navy"],stock:3,emoji:"🛵"},
+  {id:2,name:"NMax 155",brand:"Yamaha",engine:"155cc",power:"15 hp",topSpeed:"110 km/h",fuelTank:"6.6 L",weight:"131 kg",colors:["blue","black","white"],stock:2,emoji:"🛵"},
+  {id:3,name:"Vespa GTS 300",brand:"Piaggio (Vespa)",engine:"300cc",power:"23.7 hp",topSpeed:"135 km/h",fuelTank:"9 L",weight:"170 kg",colors:["red","cream","silver","navy"],stock:1,emoji:"🛵"},
+  {id:4,name:"NIU NQi GT",brand:"NIU",engine:"Electric",power:"4 kW",topSpeed:"70 km/h",fuelTank:"N/A (Electric)",weight:"108 kg",colors:["black","white","red"],stock:0,emoji:"⚡"}
+];
+
+function save(){localStorage.setItem('runamokmoto_inventory',JSON.stringify(inventory));}
+
+function renderCatalog(){
+  var el=document.getElementById('catalog');
+  if(!inventory.length){
+    el.innerHTML='<div class="empty-state"><div class="empty-icon">🛵</div><p>No scooters in inventory yet.<br>Check back soon or call Rick!</p></div>';
+    return;
+  }
+  el.innerHTML=inventory.map(function(s){
+    var badge=s.stock>0
+      ?'<span class="stock-badge in-stock">✓ '+s.stock+' in stock</span>'
+      :'<span class="stock-badge out-stock">Out of Stock</span>';
+    var dots=(s.colors||[]).map(function(c){
+      var hex=COLOR_MAP[c.toLowerCase()]||'#888';
+      var b=c.toLowerCase()==='black'?'border:2px solid #444;':'';
+      return '<span class="color-dot" title="'+c+'" style="background:'+hex+';'+b+'"></span>';
+    }).join('');
+    return '<div class="scooter-card">'
+      +'<div class="card-image">'+(s.emoji||'🛵')+'</div>'
+      +'<div class="card-body">'
+      +'<div class="card-top"><div>'
+      +'<div class="card-brand">'+s.brand+'</div>'
+      +'<div class="card-name">'+s.name+'</div>'
+      +'</div>'+badge+'</div>'
+      +'<div class="specs-grid">'
+      +'<div class="spec-item"><label>Engine</label><span>'+(s.engine||'—')+'</span></div>'
+      +'<div class="spec-item"><label>Power</label><span>'+(s.power||'—')+'</span></div>'
+      +'<div class="spec-item"><label>Top Speed</label><span>'+(s.topSpeed||'—')+'</span></div>'
+      +'<div class="spec-item"><label>Fuel Tank</label><span>'+(s.fuelTank||'—')+'</span></div>'
+      +'<div class="spec-item"><label>Weight</label><span>'+(s.weight||'—')+'</span></div>'
+      +'</div>'
+      +'<div class="colors-row"><span class="colors-label">Colors:</span>'
+      +(dots||'<span style="color:var(--muted);font-size:.8rem">N/A</span>')
+      +'</div></div></div>';
+  }).join('');
+}
+
+var ADMIN_PIN='1234';
+var adminUnlocked=false;
+var lookupTimer=null;
+
+function showToast(msg,isErr){
+  var t=document.getElementById('toast-root');
+  t.innerHTML='<div class="toast" style="'+(isErr?'background:var(--red)':'')+'">'+msg+'</div>';
+  setTimeout(function(){t.innerHTML='';},3000);
+}
+
+function lookupScooter(name){
+  var key=name.trim().toLowerCase();
+  if(SCOOTER_DB[key])return SCOOTER_DB[key];
+  var words=key.split(/\s+/);
+  var keys=Object.keys(SCOOTER_DB);
+  for(var i=0;i<keys.length;i++){
+    var k=keys[i];
+    if(words.every(function(w){return k.indexOf(w)>=0;}))return SCOOTER_DB[k];
+  }
+  return null;
+}
+
+function populateForm(data){
+  document.getElementById('f-brand').value=data.brand||'';
+  document.getElementById('f-engine').value=data.engine||'';
+  document.getElementById('f-power').value=data.power||'';
+  document.getElementById('f-topspeed').value=data.topSpeed||'';
+  document.getElementById('f-fueltank').value=data.fuelTank||'';
+  document.getElementById('f-weight').value=data.weight||'';
+  document.getElementById('f-colors').value=(data.colors||[]).join(', ');
+}
+
+function renderAdminModal(){
+  var root=document.getElementById('modal-root');
+  if(!adminUnlocked){
+    root.innerHTML='<div class="modal-overlay" id="modal-overlay"><div class="modal">'
+      +'<h2>Admin <span>Login</span></h2>'
+      +'<p>Enter your PIN to access the inventory manager.</p>'
+      +'<div class="pin-form">'
+      +'<div class="form-row"><label>Admin PIN</label>'
+      +'<input type="password" id="pin-input" placeholder="••••" maxlength="10"/></div>'
+      +'<div id="pin-error" class="pin-error" style="display:none">Incorrect PIN. Try again.</div>'
+      +'<div class="modal-actions">'
+      +'<button class="btn-cancel" onclick="closeAdmin()">Cancel</button>'
+      +'<button class="btn-add" onclick="checkPin()">Unlock</button>'
+      +'</div></div></div></div>';
+    document.getElementById('pin-input').addEventListener('keydown',function(e){if(e.key==='Enter')checkPin();});
+  } else {
+    root.innerHTML='<div class="modal-overlay" id="modal-overlay"><div class="modal">'
+      +'<h2>Add <span>Scooter</span></h2>'
+      +'<p>Type the scooter name and specs will auto-fill from our database. Adjust anything needed.</p>'
+      +'<div class="form-row"><label>Scooter Name *</label>'
+      +'<input type="text" id="f-name" placeholder="e.g. Honda PCX 150, Vespa GTS 300..."/>'
+      +'<div id="lookup-status" class="lookup-status" style="display:none"></div></div>'
+      +'<div class="form-grid">'
+      +'<div class="form-row"><label>Brand</label><input type="text" id="f-brand" placeholder="Honda"/></div>'
+      +'<div class="form-row"><label>Engine</label><input type="text" id="f-engine" placeholder="150cc"/></div>'
+      +'<div class="form-row"><label>Power</label><input type="text" id="f-power" placeholder="12 hp"/></div>'
+      +'<div class="form-row"><label>Top Speed</label><input type="text" id="f-topspeed" placeholder="95 km/h"/></div>'
+      +'<div class="form-row"><label>Fuel Tank</label><input type="text" id="f-fueltank" placeholder="8 L"/></div>'
+      +'<div class="form-row"><label>Weight</label><input type="text" id="f-weight" placeholder="130 kg"/></div>'
+      +'</div>'
+      +'<div class="form-row"><label>Colors (comma-separated)</label>'
+      +'<input type="text" id="f-colors" placeholder="black, white, red"/></div>'
+      +'<div class="form-row"><label>Units in Stock</label>'
+      +'<input type="number" id="f-stock" placeholder="1" min="0" value="1"/></div>'
+      +'<div class="modal-actions">'
+      +'<button class="btn-cancel" onclick="closeAdmin()">Cancel</button>'
+      +'<button class="btn-add" onclick="addScooter()">Add to Fleet</button>'
+      +'</div></div></div>';
+    document.getElementById('f-name').addEventListener('input',function(){
+      clearTimeout(lookupTimer);
+      var val=this.value.trim();
+      var status=document.getElementById('lookup-status');
+      if(!val){status.style.display='none';return;}
+      status.style.display='block';
+      status.className='lookup-status lookup-loading';
+      status.textContent='Looking up specs...';
+      lookupTimer=setTimeout(function(){
+        var found=lookupScooter(val);
+        if(found){
+          populateForm(found);
+          status.className='lookup-status lookup-ok';
+          status.textContent='✓ Specs loaded for '+found.brand+' — review and adjust if needed.';
+        } else {
+          status.className='lookup-status lookup-miss';
+          status.textContent='⚠ Not in database — please enter specs manually below.';
+        }
+      },600);
+    });
+  }
+}
+
+function checkPin(){
+  var val=document.getElementById('pin-input').value;
+  if(val===ADMIN_PIN){adminUnlocked=true;renderAdminModal();}
+  else{document.getElementById('pin-error').style.display='block';document.getElementById('pin-input').value='';}
+}
+
+function addScooter(){
+  var name=document.getElementById('f-name').value.trim();
+  if(!name){showToast('Please enter a scooter name.',true);return;}
+  var colorsRaw=document.getElementById('f-colors').value;
+  var colors=colorsRaw.split(',').map(function(c){return c.trim().toLowerCase();}).filter(Boolean);
+  var found=lookupScooter(name);
+  inventory.push({
+    id:Date.now(),name:name,
+    brand:document.getElementById('f-brand').value.trim()||'Unknown',
+    engine:document.getElementById('f-engine').value.trim()||'—',
+    power:document.getElementById('f-power').value.trim()||'—',
+    topSpeed:document.getElementById('f-topspeed').value.trim()||'—',
+    fuelTank:document.getElementById('f-fueltank').value.trim()||'—',
+    weight:document.getElementById('f-weight').value.trim()||'—',
+    colors:colors,
+    stock:parseInt(document.getElementById('f-stock').value)||0,
+    emoji:found?(found.emoji||'🛵'):'🛵'
+  });
+  save();renderCatalog();closeAdmin();
+  showToast('✓ '+name+' added to the fleet!');
+}
+
+function closeAdmin(){document.getElementById('modal-root').innerHTML='';}
+
+document.getElementById('openAdminBtn').addEventListener('click',function(){renderAdminModal();});
+document.getElementById('modal-root').addEventListener('click',function(e){if(e.target.id==='modal-overlay')closeAdmin();});
+
+renderCatalog();
+</script>
+</body>
+</html>
