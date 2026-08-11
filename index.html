@@ -138,6 +138,14 @@
     .empty-state { grid-column:1/-1; text-align:center; padding:5rem 1rem; color:var(--muted); }
     .empty-state .empty-icon { font-size:4rem; margin-bottom:1rem; }
 
+    .confirm-popup { position:fixed; inset:0; z-index:400; background:rgba(0,0,0,.7); display:flex; align-items:center; justify-content:center; padding:1rem; }
+    .confirm-box { background:var(--card); border:1px solid var(--red); border-radius:14px; padding:1.75rem 2rem; max-width:340px; width:100%; text-align:center; }
+    .confirm-box h3 { font-size:1.05rem; font-weight:800; margin-bottom:.5rem; }
+    .confirm-box p { color:var(--muted); font-size:.88rem; margin-bottom:1.25rem; line-height:1.5; }
+    .confirm-actions { display:flex; gap:.75rem; justify-content:center; }
+    .confirm-yes { background:var(--red); color:#fff; border:none; padding:.55rem 1.4rem; border-radius:8px; font-weight:700; cursor:pointer; font-size:.9rem; }
+    .confirm-no  { background:none; border:1px solid var(--border); color:var(--muted); padding:.55rem 1.4rem; border-radius:8px; cursor:pointer; font-size:.9rem; }
+
     .bg-black   { background:linear-gradient(135deg,#1a1a1a,#0a0a0a); }
     .bg-red     { background:linear-gradient(135deg,#3a0a0a,#1a0505); }
     .bg-blue    { background:linear-gradient(135deg,#0a1a3a,#050a1a); }
@@ -153,7 +161,10 @@
     <a href="#about">About</a>
     <a href="#contact">Contact</a>
   </div>
-  <button class="admin-btn" id="openAdminBtn">Admin</button>
+  <div style="display:flex;gap:.5rem;align-items:center;">
+    <button class="admin-btn" id="addScooterBtn" style="display:none;border-color:var(--orange);color:var(--orange);">+ Add Scooter</button>
+    <button class="admin-btn" id="openAdminBtn">Admin</button>
+  </div>
 </nav>
 
 <section class="hero" id="home">
@@ -369,81 +380,85 @@ function lookupScooter(name){
   return null;
 }
 
-function renderAdminModal(){
+function renderPinModal(){
   var root=document.getElementById('modal-root');
-  if(!adminUnlocked){
-    root.innerHTML='<div class="modal-overlay" id="modal-overlay"><div class="modal">'
-      +'<h2>Admin <span>Login</span></h2><p>Enter your PIN to manage the fleet inventory.</p>'
-      +'<div class="pin-form"><div class="form-row"><label>Admin PIN</label>'
-      +'<input type="password" id="pin-input" placeholder="&#8226;&#8226;&#8226;&#8226;" maxlength="10"/></div>'
-      +'<div id="pin-error" class="pin-error" style="display:none">Incorrect PIN.</div>'
-      +'<div class="modal-actions"><button class="btn-cancel" onclick="closeAdmin()">Cancel</button>'
-      +'<button class="btn-add" onclick="checkPin()">Unlock</button></div></div></div></div>';
-    document.getElementById('pin-input').addEventListener('keydown',function(e){if(e.key==='Enter')checkPin();});
-  } else {
-    root.innerHTML='<div class="modal-overlay" id="modal-overlay"><div class="modal">'
-      +'<h2>Add <span>Scooter</span></h2><p>Enter a model name and specs will auto-fill. Fine-tune anything below.</p>'
-      +'<div class="form-row"><label>Model Name *</label>'
-      +'<input type="text" id="f-name" placeholder="e.g. TaoTao Powermax 150, Tank Urban Sporty..."/>'
-      +'<div id="lookup-status" class="lookup-status" style="display:none"></div></div>'
-      +'<div class="form-grid">'
-      +'<div class="form-row"><label>Brand</label><input type="text" id="f-brand" placeholder="TaoTao"/></div>'
-      +'<div class="form-row"><label>Model Code</label><input type="text" id="f-model" placeholder="PMX150"/></div>'
-      +'<div class="form-row"><label>Engine</label><input type="text" id="f-engine" placeholder="149cc GY6"/></div>'
-      +'<div class="form-row"><label>Power</label><input type="text" id="f-power" placeholder="10 hp"/></div>'
-      +'<div class="form-row"><label>Top Speed</label><input type="text" id="f-topspeed" placeholder="55 mph"/></div>'
-      +'<div class="form-row"><label>Transmission</label><input type="text" id="f-trans" placeholder="Auto CVT"/></div>'
-      +'<div class="form-row"><label>Brakes</label><input type="text" id="f-brakes" placeholder="Front Disc / Rear Drum"/></div>'
-      +'<div class="form-row"><label>Tires</label><input type="text" id="f-tires" placeholder="120/70-12"/></div>'
-      +'<div class="form-row"><label>Fuel Tank</label><input type="text" id="f-fueltank" placeholder="1.4 gal"/></div>'
-      +'<div class="form-row"><label>Fuel Economy</label><input type="text" id="f-mpg" placeholder="80+"/></div>'
-      +'<div class="form-row"><label>Weight</label><input type="text" id="f-weight" placeholder="258 lbs"/></div>'
-      +'<div class="form-row"><label>Price</label><input type="text" id="f-price" placeholder="$1,099"/></div>'
-      +'</div>'
-      +'<div class="form-row"><label>Description</label><textarea id="f-desc" placeholder="Brief description..."></textarea></div>'
-      +'<div class="form-row"><label>Colors (comma-separated)</label><input type="text" id="f-colors" placeholder="black, red, blue"/></div>'
-      +'<div class="form-row"><label>Units in Stock</label><input type="number" id="f-stock" min="0" value="1"/></div>'
-      +'<div class="modal-actions"><button class="btn-cancel" onclick="closeAdmin()">Cancel</button>'
-      +'<button class="btn-add" onclick="addScooter()">Add to Fleet</button></div></div></div>';
+  root.innerHTML='<div class="modal-overlay" id="modal-overlay"><div class="modal">'
+    +'<h2>Admin <span>Login</span></h2><p>Enter your PIN to manage the fleet inventory.</p>'
+    +'<div class="pin-form"><div class="form-row"><label>Admin PIN</label>'
+    +'<input type="password" id="pin-input" placeholder="&#8226;&#8226;&#8226;&#8226;" maxlength="10"/></div>'
+    +'<div id="pin-error" class="pin-error" style="display:none">Incorrect PIN.</div>'
+    +'<div class="modal-actions"><button class="btn-cancel" onclick="closeAdmin()">Cancel</button>'
+    +'<button class="btn-add" onclick="checkPin()">Unlock</button></div></div></div></div>';
+  document.getElementById('pin-input').addEventListener('keydown',function(e){if(e.key==='Enter')checkPin();});
+}
 
-    document.getElementById('f-name').addEventListener('input',function(){
-      clearTimeout(lookupTimer);
-      var val=this.value.trim();
-      var status=document.getElementById('lookup-status');
-      if(!val){status.style.display='none';return;}
-      status.style.display='block'; status.className='lookup-status lookup-loading'; status.textContent='Looking up specs...';
-      lookupTimer=setTimeout(function(){
-        var found=lookupScooter(val);
-        if(found){
-          if(found.brand)        document.getElementById('f-brand').value=found.brand;
-          if(found.engine)       document.getElementById('f-engine').value=found.engine;
-          if(found.power)        document.getElementById('f-power').value=found.power;
-          if(found.topSpeed)     document.getElementById('f-topspeed').value=found.topSpeed;
-          if(found.transmission) document.getElementById('f-trans').value=found.transmission;
-          if(found.brakes)       document.getElementById('f-brakes').value=found.brakes;
-          if(found.tires)        document.getElementById('f-tires').value=found.tires;
-          if(found.fuelTank)     document.getElementById('f-fueltank').value=found.fuelTank;
-          if(found.mpg)          document.getElementById('f-mpg').value=found.mpg;
-          if(found.weight)       document.getElementById('f-weight').value=found.weight;
-          if(found.price)        document.getElementById('f-price').value=found.price;
-          if(found.colors)       document.getElementById('f-colors').value=found.colors;
-          if(found.desc)         document.getElementById('f-desc').value=found.desc;
-          status.className='lookup-status lookup-ok';
-          status.textContent='Specs loaded for '+found.brand+' &#8212; review and adjust as needed.';
-        } else {
-          status.className='lookup-status lookup-miss';
-          status.textContent='Not in database &#8212; fill in specs manually below.';
-        }
-      },550);
-    });
-  }
+function renderAddModal(){
+  var root=document.getElementById('modal-root');
+  root.innerHTML='<div class="modal-overlay" id="modal-overlay"><div class="modal">'
+    +'<h2>Add <span>Scooter</span></h2><p>Enter a model name and specs will auto-fill. Fine-tune anything below.</p>'
+    +'<div class="form-row"><label>Model Name *</label>'
+    +'<input type="text" id="f-name" placeholder="e.g. TaoTao Powermax 150, Tank Urban Sporty..."/>'
+    +'<div id="lookup-status" class="lookup-status" style="display:none"></div></div>'
+    +'<div class="form-grid">'
+    +'<div class="form-row"><label>Brand</label><input type="text" id="f-brand" placeholder="TaoTao"/></div>'
+    +'<div class="form-row"><label>Model Code</label><input type="text" id="f-model" placeholder="PMX150"/></div>'
+    +'<div class="form-row"><label>Engine</label><input type="text" id="f-engine" placeholder="149cc GY6"/></div>'
+    +'<div class="form-row"><label>Power</label><input type="text" id="f-power" placeholder="10 hp"/></div>'
+    +'<div class="form-row"><label>Top Speed</label><input type="text" id="f-topspeed" placeholder="55 mph"/></div>'
+    +'<div class="form-row"><label>Transmission</label><input type="text" id="f-trans" placeholder="Auto CVT"/></div>'
+    +'<div class="form-row"><label>Brakes</label><input type="text" id="f-brakes" placeholder="Front Disc / Rear Drum"/></div>'
+    +'<div class="form-row"><label>Tires</label><input type="text" id="f-tires" placeholder="120/70-12"/></div>'
+    +'<div class="form-row"><label>Fuel Tank</label><input type="text" id="f-fueltank" placeholder="1.4 gal"/></div>'
+    +'<div class="form-row"><label>Fuel Economy</label><input type="text" id="f-mpg" placeholder="80+"/></div>'
+    +'<div class="form-row"><label>Weight</label><input type="text" id="f-weight" placeholder="258 lbs"/></div>'
+    +'<div class="form-row"><label>Price</label><input type="text" id="f-price" placeholder="$1,099"/></div>'
+    +'</div>'
+    +'<div class="form-row"><label>Description</label><textarea id="f-desc" placeholder="Brief description..."></textarea></div>'
+    +'<div class="form-row"><label>Colors (comma-separated)</label><input type="text" id="f-colors" placeholder="black, red, blue"/></div>'
+    +'<div class="form-row"><label>Units in Stock</label><input type="number" id="f-stock" min="0" value="1"/></div>'
+    +'<div class="modal-actions"><button class="btn-cancel" onclick="closeAdmin()">Cancel</button>'
+    +'<button class="btn-add" onclick="addScooter()">Add to Fleet</button></div></div></div>';
+
+  document.getElementById('f-name').addEventListener('input',function(){
+    clearTimeout(lookupTimer);
+    var val=this.value.trim();
+    var status=document.getElementById('lookup-status');
+    if(!val){status.style.display='none';return;}
+    status.style.display='block'; status.className='lookup-status lookup-loading'; status.textContent='Looking up specs...';
+    lookupTimer=setTimeout(function(){
+      var found=lookupScooter(val);
+      if(found){
+        if(found.brand)        document.getElementById('f-brand').value=found.brand;
+        if(found.engine)       document.getElementById('f-engine').value=found.engine;
+        if(found.power)        document.getElementById('f-power').value=found.power;
+        if(found.topSpeed)     document.getElementById('f-topspeed').value=found.topSpeed;
+        if(found.transmission) document.getElementById('f-trans').value=found.transmission;
+        if(found.brakes)       document.getElementById('f-brakes').value=found.brakes;
+        if(found.tires)        document.getElementById('f-tires').value=found.tires;
+        if(found.fuelTank)     document.getElementById('f-fueltank').value=found.fuelTank;
+        if(found.mpg)          document.getElementById('f-mpg').value=found.mpg;
+        if(found.weight)       document.getElementById('f-weight').value=found.weight;
+        if(found.price)        document.getElementById('f-price').value=found.price;
+        if(found.colors)       document.getElementById('f-colors').value=found.colors;
+        if(found.desc)         document.getElementById('f-desc').value=found.desc;
+        status.className='lookup-status lookup-ok';
+        status.textContent='Specs loaded for '+found.brand+' &#8212; review and adjust as needed.';
+      } else {
+        status.className='lookup-status lookup-miss';
+        status.textContent='Not in database &#8212; fill in specs manually below.';
+      }
+    },550);
+  });
 }
 
 function checkPin(){
   if(document.getElementById('pin-input').value===ADMIN_PIN){
     adminUnlocked=true;
     document.getElementById('openAdminBtn').textContent='Exit Admin';
-    renderAdminModal();
+    document.getElementById('addScooterBtn').style.display='inline-block';
+    closeAdmin();
+    renderCatalog();
+    showToast('Admin mode on — hover a card to delete it.');
   } else {
     document.getElementById('pin-error').style.display='block';
     document.getElementById('pin-input').value='';
@@ -484,17 +499,42 @@ function deleteScooter(id){
   if(!adminUnlocked) return;
   var s = inventory.find(function(x){return x.id===id;});
   if(!s) return;
-  if(!confirm('Remove "'+s.name+'" from the fleet?')) return;
-  inventory = inventory.filter(function(x){return x.id!==id;});
-  save(); renderCatalog();
-  showToast('&#x2713; '+s.name+' removed from fleet.');
+  var toast=document.getElementById('toast-root');
+  toast.innerHTML='<div class="confirm-popup">'
+    +'<div class="confirm-box">'
+    +'<h3>Remove Scooter?</h3>'
+    +'<p>Delete <strong>'+s.name+'</strong> from the fleet? This cannot be undone.</p>'
+    +'<div class="confirm-actions">'
+    +'<button class="confirm-no" id="delNo">Cancel</button>'
+    +'<button class="confirm-yes" id="delYes">Yes, Remove</button>'
+    +'</div></div></div>';
+  document.getElementById('delNo').onclick=function(){ toast.innerHTML=''; };
+  document.getElementById('delYes').onclick=function(){
+    inventory = inventory.filter(function(x){return x.id!==id;});
+    save(); renderCatalog();
+    toast.innerHTML='';
+    showToast('&#x2713; '+s.name+' removed from fleet.');
+  };
 }
 
 function closeAdmin(){document.getElementById('modal-root').innerHTML='';}
+
 document.getElementById('openAdminBtn').addEventListener('click',function(){
-  if(adminUnlocked){ adminUnlocked=false; document.getElementById('openAdminBtn').textContent='Admin'; renderCatalog(); showToast('Admin mode off.'); return; }
-  renderAdminModal();
+  if(adminUnlocked){
+    adminUnlocked=false;
+    document.getElementById('openAdminBtn').textContent='Admin';
+    document.getElementById('addScooterBtn').style.display='none';
+    renderCatalog();
+    showToast('Admin mode off.');
+    return;
+  }
+  renderPinModal();
 });
+
+document.getElementById('addScooterBtn').addEventListener('click',function(){
+  if(adminUnlocked) renderAddModal();
+});
+
 document.getElementById('modal-root').addEventListener('click',function(e){if(e.target.id==='modal-overlay')closeAdmin();});
 
 renderCatalog();
