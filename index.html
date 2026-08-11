@@ -149,6 +149,9 @@
     .confirm-yes { background:var(--red); color:#fff; border:none; padding:.55rem 1.4rem; border-radius:8px; font-weight:700; cursor:pointer; font-size:.9rem; }
     .confirm-no  { background:none; border:1px solid var(--border); color:var(--muted); padding:.55rem 1.4rem; border-radius:8px; cursor:pointer; font-size:.9rem; }
 
+    .img-counter { position:absolute; bottom:.5rem; right:.6rem; background:rgba(0,0,0,.6); color:#fff; font-size:.7rem; font-weight:700; padding:.2rem .5rem; border-radius:20px; pointer-events:none; }
+    .gallery-img { transition:opacity .2s; }
+
     .bg-black   { background:linear-gradient(135deg,#1a1a1a,#0a0a0a); }
     .bg-red     { background:linear-gradient(135deg,#3a0a0a,#1a0505); }
     .bg-blue    { background:linear-gradient(135deg,#0a1a3a,#050a1a); }
@@ -257,7 +260,7 @@ var COLOR_MAP = {
 };
 
 var DEFAULT_INVENTORY = [
-  {id:101,brand:"TaoTao",model:"ATM50-A1",name:"Classic 50 (Pony 50)",cc:50,engine:"49cc 4-stroke air-cooled",power:"2.1 hp",topSpeed:"35 mph",fuelTank:"1.2 gal",weight:"190 lbs",transmission:"Fully Automatic CVT",brakes:"Front Disc / Rear Drum",tires:"100/60-10 front & rear",mpg:"100+",colors:["black","red","blue","pink","green","white"],desc:"The original TaoTao classic — compact, reliable, and stupidly fun. Perfect for commuters and first-time riders. Comes with matching rear trunk, LED lights, and electric start with kick-start backup.",stock:4,emoji:"&#x1F6F5;",bgClass:"bg-black",price:"$749"},
+  {id:101,brand:"TaoTao",model:"ATM50-A1",name:"Classic 50 (Pony 50)",cc:50,engine:"49cc 4-stroke air-cooled",power:"2.1 hp",topSpeed:"35 mph",fuelTank:"1.2 gal",weight:"190 lbs",transmission:"Fully Automatic CVT",brakes:"Front Disc / Rear Drum",tires:"100/60-10 front & rear",mpg:"100+",colors:["black","red","blue","pink","green","white","silver","orange"],desc:"The original TaoTao classic — compact, reliable, and stupidly fun. Perfect for commuters and first-time riders. Comes with matching rear trunk, LED lights, and electric start with kick-start backup.",stock:4,emoji:"&#x1F6F5;",bgClass:"bg-black",price:"$749",imgs:["https://taomotor.com/wp-content/uploads/2019/09/ATM50A1_20Red-500x500_c4ec4b08-d8c8-4b3b-99b5-c28074793b0a_540x-300x300.jpg","https://taomotor.com/wp-content/uploads/2019/09/ATM50A1_20Silver-500x500_4aad738d-5714-416e-8ba1-01e3e38ee8bb_540x-300x300.jpg","https://taomotor.com/wp-content/uploads/2019/09/ATM50A1Green-500x500_d8c7e3f6-f482-4ea6-a70f-590ae7fe1132_540x-300x300.jpg","https://taomotor.com/wp-content/uploads/2019/09/ATM50A1Orange-500x500_734040ca-96d3-4f12-8eb9-9f935e2acdd1_540x-300x300.jpg","https://taomotor.com/wp-content/uploads/2019/09/ATM50A1Pink-500x500_fd9426b7-df32-4b22-bf50-9ca53ff5c834_540x-300x300.jpg","https://taomotor.com/wp-content/uploads/2019/09/ATM50A1White-500x500_238da39b-c3a0-4c54-888d-711e3bc7d040_540x-300x300.jpg"]},
   {id:102,brand:"TaoTao",model:"CY50-A",name:"CY50-A Speed 50",cc:50,engine:"49cc 4-stroke air-cooled",power:"2.3 hp",topSpeed:"35 mph",fuelTank:"1.2 gal",weight:"185 lbs",transmission:"Fully Automatic CVT",brakes:"Front Disc / Rear Drum",tires:"100/60-10 front & rear",mpg:"100+",colors:["matte black","red","blue","white"],desc:"Sleek and streamlined, the CY50-A is TaoTao's sporty take on the classic 50cc moped. Its low seat height and lightweight frame make it ideal for city riding and tight parking.",stock:3,emoji:"&#x1F6F5;",bgClass:"bg-black",price:"$769"},
   {id:103,brand:"TaoTao",model:"Thunder 50 / Blade 50",name:"Thunder 50",cc:50,engine:"49cc 4-stroke air-cooled",power:"3.26 hp",topSpeed:"38 mph",fuelTank:"1.3 gal",weight:"190 lbs",transmission:"Fully Automatic CVT",brakes:"Front Disc / Rear Drum",tires:"120/70-12 polished aluminum rims",mpg:"90+",colors:["black","red","blue","white","silver"],desc:"Bigger tires, more attitude. The Thunder 50 rolls on 12-inch polished aluminum rims with dual rear shock absorbers and an upgraded suspension system. Street legal in most states. Comes with matching trunk.",stock:5,emoji:"&#x1F6F5;",bgClass:"bg-black",price:"$849"},
   {id:104,brand:"TaoTao",model:"EVO 50",name:"EVO 50 Full-Size",cc:50,engine:"49cc 4-stroke air-cooled",power:"2.1 hp",topSpeed:"32 mph",fuelTank:"1.2 gal",weight:"205 lbs",transmission:"Fully Automatic CVT",brakes:"Front Disc / Rear Drum",tires:"120/70-12 aluminum rims",mpg:"100+",colors:["black","red","white"],desc:"All the presence of a 150cc in a 50cc package. The EVO 50 wraps a fuel-sipping 50cc engine in a full-size body — ideal where 50cc rules apply but you still want to look the part.",stock:2,emoji:"&#x1F6F5;",bgClass:"bg-black",price:"$879"},
@@ -314,9 +317,15 @@ function renderCatalog(){
       var b = (c==='black'||c==='matte black') ? 'border:2px solid #444;' : '';
       return '<span class="color-dot" title="'+c+'" style="background:'+hex+';'+b+'"></span>';
     }).join('');
-    var imgSection = s.img
-      ? '<img src="'+s.img+'" alt="'+s.name+'"/>'
-      : '<span class="emoji-fallback">'+(s.emoji||'&#x1F6F5;')+'</span>';
+    var imgSection;
+    if(s.imgs && s.imgs.length){
+      imgSection = '<img src="'+s.imgs[0]+'" alt="'+s.name+'" class="gallery-img" data-imgs="'+s.imgs.join('|')+'" data-idx="0" onclick="cycleImg(this)" style="cursor:pointer"/>'
+        +(s.imgs.length>1?'<span class="img-counter">1 / '+s.imgs.length+'</span>':'');
+    } else if(s.img){
+      imgSection = '<img src="'+s.img+'" alt="'+s.name+'"/>';
+    } else {
+      imgSection = '<span class="emoji-fallback">'+(s.emoji||'&#x1F6F5;')+'</span>';
+    }
     var delBtn = adminUnlocked
       ? '<button class="delete-btn" title="Remove from fleet" onclick="deleteScooter('+s.id+')">&#x2715;</button>'
       : '';
@@ -581,6 +590,19 @@ function deleteScooter(id){
     toast.innerHTML='';
     showToast('&#x2713; '+s.name+' removed from fleet.');
   };
+}
+
+function cycleImg(img){
+  var imgs = img.dataset.imgs.split('|');
+  var idx = (parseInt(img.dataset.idx)+1) % imgs.length;
+  img.style.opacity='0';
+  setTimeout(function(){
+    img.src = imgs[idx];
+    img.dataset.idx = idx;
+    img.style.opacity='1';
+    var counter = img.parentElement.querySelector('.img-counter');
+    if(counter) counter.textContent=(idx+1)+' / '+imgs.length;
+  },150);
 }
 
 function closeAdmin(){document.getElementById('modal-root').innerHTML='';}
