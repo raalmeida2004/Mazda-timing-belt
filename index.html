@@ -18,12 +18,13 @@
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--darker); color: var(--text); min-height: 100vh; }
+
     nav {
       position: sticky; top: 0; z-index: 100;
-      background: rgba(10,10,10,0.95); backdrop-filter: blur(12px);
+      background: rgba(10,10,10,0.96); backdrop-filter: blur(14px);
       border-bottom: 1px solid var(--border);
       display: flex; align-items: center; justify-content: space-between;
-      padding: 0 1.5rem; height: 60px;
+      padding: 0 1.5rem; height: 62px;
     }
     .nav-logo { font-size: 1.4rem; font-weight: 900; letter-spacing: .08em; color: var(--orange); text-decoration: none; }
     .nav-links { display: flex; gap: 1.5rem; }
@@ -31,88 +32,113 @@
     .nav-links a:hover { color: var(--text); }
     .admin-btn { background: none; border: 1px solid var(--border); color: var(--muted); padding: .35rem .8rem; border-radius: 6px; font-size: .8rem; cursor: pointer; transition: all .2s; }
     .admin-btn:hover { border-color: var(--orange); color: var(--orange); }
+
     .hero {
       position: relative; overflow: hidden;
       padding: 7rem 1.5rem 5rem;
       background: linear-gradient(135deg, #0a0a0a 0%, #1a0a00 50%, #0a0a0a 100%);
       text-align: center;
     }
-    .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(240,78,26,.18) 0%, transparent 70%); }
-    .hero-eyebrow { font-size: .8rem; letter-spacing: .25em; color: var(--orange); text-transform: uppercase; margin-bottom: 1rem; position: relative; }
-    .hero h1 { font-size: clamp(3rem, 10vw, 7rem); font-weight: 900; letter-spacing: -.02em; line-height: .95; position: relative; }
-    .hero h1 span { color: var(--orange); }
-    .hero-sub { margin-top: 1.5rem; font-size: clamp(1rem, 2.5vw, 1.25rem); color: var(--muted); max-width: 560px; margin-inline: auto; line-height: 1.6; position: relative; }
-    .hero-cta { margin-top: 2.5rem; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; position: relative; }
-    .btn-primary { background: var(--orange); color: #fff; border: none; padding: .8rem 2rem; border-radius: 8px; font-size: 1rem; font-weight: 700; cursor: pointer; text-decoration: none; transition: transform .15s, box-shadow .15s; }
-    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(240,78,26,.4); }
-    .btn-outline { background: none; color: var(--text); border: 1px solid var(--border); padding: .8rem 2rem; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; text-decoration: none; transition: border-color .2s; }
-    .btn-outline:hover { border-color: var(--orange); }
-    .about { padding: 5rem 1.5rem; max-width: 900px; margin-inline: auto; display: grid; gap: 2.5rem; grid-template-columns: 1fr 1fr; }
-    @media (max-width: 640px) { .about { grid-template-columns: 1fr; } }
-    .about-heading { grid-column: 1 / -1; font-size: clamp(1.8rem, 5vw, 2.8rem); font-weight: 900; line-height: 1.1; }
-    .about-heading span { color: var(--orange); }
-    .about-block { display: flex; flex-direction: column; gap: .75rem; }
-    .about-block h3 { font-size: 1rem; font-weight: 700; color: var(--orange); letter-spacing: .05em; }
-    .about-block p { color: var(--muted); line-height: 1.7; font-size: .95rem; }
-    .section-header { text-align: center; padding: 4rem 1.5rem 2rem; }
-    .section-header h2 { font-size: clamp(1.8rem, 5vw, 2.5rem); font-weight: 900; }
-    .section-header h2 span { color: var(--orange); }
-    .section-header p { color: var(--muted); margin-top: .5rem; font-size: .95rem; }
-    .catalog { padding: 0 1rem 4rem; max-width: 1200px; margin-inline: auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.25rem; }
-    .scooter-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; transition: transform .2s, border-color .2s; }
-    .scooter-card:hover { transform: translateY(-4px); border-color: var(--orange); }
-    .card-image { height: 180px; background: linear-gradient(135deg, #1e1e1e, #0d0d0d); display: flex; align-items: center; justify-content: center; font-size: 5rem; border-bottom: 1px solid var(--border); }
-    .card-body { padding: 1.25rem; }
-    .card-top { display: flex; justify-content: space-between; align-items: flex-start; gap: .5rem; margin-bottom: .75rem; }
-    .card-name { font-size: 1.1rem; font-weight: 800; line-height: 1.2; }
-    .card-brand { font-size: .75rem; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; }
-    .stock-badge { font-size: .75rem; font-weight: 700; padding: .25rem .6rem; border-radius: 20px; white-space: nowrap; flex-shrink: 0; }
-    .in-stock { background: rgba(34,197,94,.15); color: var(--green); border: 1px solid rgba(34,197,94,.3); }
-    .out-stock { background: rgba(239,68,68,.15); color: var(--red); border: 1px solid rgba(239,68,68,.3); }
-    .specs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem .75rem; margin-bottom: 1rem; }
-    .spec-item label { font-size: .7rem; color: var(--muted); display: block; text-transform: uppercase; letter-spacing: .06em; }
-    .spec-item span { font-size: .85rem; font-weight: 600; }
-    .colors-row { display: flex; align-items: center; gap: .5rem; flex-wrap: wrap; margin-top: .75rem; }
-    .colors-label { font-size: .75rem; color: var(--muted); }
-    .color-dot { width: 18px; height: 18px; border-radius: 50%; border: 2px solid rgba(255,255,255,.2); cursor: default; transition: transform .15s; }
-    .color-dot:hover { transform: scale(1.2); }
-    .contact-section { background: var(--card); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 4rem 1.5rem; text-align: center; }
-    .contact-section h2 { font-size: clamp(1.6rem, 4vw, 2.2rem); font-weight: 900; margin-bottom: .5rem; }
-    .contact-section h2 span { color: var(--orange); }
-    .contact-section > p { color: var(--muted); margin-bottom: 2rem; }
-    .contact-cards { display: flex; gap: 1.25rem; justify-content: center; flex-wrap: wrap; }
-    .contact-card { background: var(--darker); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem 2rem; min-width: 220px; }
-    .contact-card .cc-icon { font-size: 2rem; margin-bottom: .5rem; }
-    .contact-card h3 { font-size: .85rem; color: var(--muted); margin-bottom: .4rem; }
-    .contact-card a { color: var(--orange); font-size: 1.1rem; font-weight: 700; text-decoration: none; }
-    .contact-card a:hover { text-decoration: underline; }
-    footer { text-align: center; padding: 2rem 1.5rem; font-size: .8rem; color: var(--muted); }
-    footer strong { color: var(--orange); }
-    .modal-overlay { position: fixed; inset: 0; z-index: 200; background: rgba(0,0,0,.75); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; padding: 1rem; }
-    .modal { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 2rem; width: 100%; max-width: 560px; max-height: 90vh; overflow-y: auto; }
-    .modal h2 { font-size: 1.4rem; font-weight: 900; margin-bottom: .5rem; }
-    .modal h2 span { color: var(--orange); }
-    .modal > p { color: var(--muted); font-size: .9rem; margin-bottom: 1.5rem; }
-    .form-row { margin-bottom: 1rem; }
-    .form-row label { display: block; font-size: .8rem; font-weight: 600; margin-bottom: .4rem; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
-    .form-row input { width: 100%; background: var(--darker); border: 1px solid var(--border); color: var(--text); padding: .65rem .85rem; border-radius: 8px; font-size: .95rem; outline: none; transition: border-color .2s; }
-    .form-row input:focus { border-color: var(--orange); }
-    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-    @media (max-width: 480px) { .form-grid { grid-template-columns: 1fr; } }
-    .modal-actions { display: flex; gap: .75rem; justify-content: flex-end; margin-top: 1.5rem; }
-    .btn-cancel { background: none; border: 1px solid var(--border); color: var(--muted); padding: .6rem 1.25rem; border-radius: 8px; font-size: .9rem; cursor: pointer; }
-    .btn-cancel:hover { border-color: var(--text); color: var(--text); }
-    .btn-add { background: var(--orange); color: #fff; border: none; padding: .6rem 1.5rem; border-radius: 8px; font-size: .9rem; font-weight: 700; cursor: pointer; }
-    .lookup-status { font-size: .8rem; padding: .5rem .75rem; border-radius: 6px; margin-top: .4rem; }
-    .lookup-ok { background: rgba(34,197,94,.1); color: var(--green); }
-    .lookup-miss { background: rgba(240,78,26,.1); color: var(--orange); }
-    .lookup-loading { background: rgba(255,255,255,.05); color: var(--muted); }
-    .pin-form { display: flex; flex-direction: column; gap: 1rem; }
-    .pin-error { color: var(--red); font-size: .85rem; text-align: center; }
-    .toast { position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%); background: var(--green); color: #fff; padding: .7rem 1.5rem; border-radius: 8px; font-weight: 700; font-size: .9rem; z-index: 300; animation: toast-in .3s ease; }
-    @keyframes toast-in { from { opacity:0; transform:translate(-50%,20px); } to { opacity:1; transform:translate(-50%,0); } }
-    .empty-state { grid-column: 1 / -1; text-align: center; padding: 5rem 1rem; color: var(--muted); }
-    .empty-state .empty-icon { font-size: 4rem; margin-bottom: 1rem; }
+    .hero::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(240,78,26,.18) 0%,transparent 70%); }
+    .hero-eyebrow { font-size:.8rem; letter-spacing:.25em; color:var(--orange); text-transform:uppercase; margin-bottom:1rem; position:relative; }
+    .hero h1 { font-size:clamp(3rem,10vw,7rem); font-weight:900; letter-spacing:-.02em; line-height:.95; position:relative; }
+    .hero h1 span { color:var(--orange); }
+    .hero-sub { margin-top:1.5rem; font-size:clamp(1rem,2.5vw,1.25rem); color:var(--muted); max-width:560px; margin-inline:auto; line-height:1.6; position:relative; }
+    .hero-cta { margin-top:2.5rem; display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; position:relative; }
+    .btn-primary { background:var(--orange); color:#fff; border:none; padding:.8rem 2rem; border-radius:8px; font-size:1rem; font-weight:700; cursor:pointer; text-decoration:none; transition:transform .15s,box-shadow .15s; }
+    .btn-primary:hover { transform:translateY(-2px); box-shadow:0 6px 24px rgba(240,78,26,.4); }
+    .btn-outline { background:none; color:var(--text); border:1px solid var(--border); padding:.8rem 2rem; border-radius:8px; font-size:1rem; font-weight:600; cursor:pointer; text-decoration:none; transition:border-color .2s; }
+    .btn-outline:hover { border-color:var(--orange); }
+
+    .about { padding:5rem 1.5rem; max-width:900px; margin-inline:auto; display:grid; gap:2.5rem; grid-template-columns:1fr 1fr; }
+    @media(max-width:640px){.about{grid-template-columns:1fr;}}
+    .about-heading { grid-column:1/-1; font-size:clamp(1.8rem,5vw,2.8rem); font-weight:900; line-height:1.1; }
+    .about-heading span { color:var(--orange); }
+    .about-block { display:flex; flex-direction:column; gap:.75rem; }
+    .about-block h3 { font-size:1rem; font-weight:700; color:var(--orange); letter-spacing:.05em; }
+    .about-block p { color:var(--muted); line-height:1.7; font-size:.95rem; }
+
+    .filter-bar { display:flex; gap:.5rem; justify-content:center; flex-wrap:wrap; padding:0 1rem 2rem; }
+    .filter-btn { background:none; border:1px solid var(--border); color:var(--muted); padding:.4rem 1rem; border-radius:20px; font-size:.82rem; cursor:pointer; transition:all .2s; }
+    .filter-btn:hover,.filter-btn.active { border-color:var(--orange); color:var(--orange); background:rgba(240,78,26,.08); }
+
+    .section-header { text-align:center; padding:4rem 1.5rem 1.5rem; }
+    .section-header h2 { font-size:clamp(1.8rem,5vw,2.5rem); font-weight:900; }
+    .section-header h2 span { color:var(--orange); }
+    .section-header p { color:var(--muted); margin-top:.5rem; font-size:.95rem; }
+
+    .catalog { padding:0 1rem 4rem; max-width:1280px; margin-inline:auto; display:grid; grid-template-columns:repeat(auto-fill,minmax(320px,1fr)); gap:1.4rem; }
+
+    .scooter-card { background:var(--card); border:1px solid var(--border); border-radius:16px; overflow:hidden; transition:transform .2s,border-color .2s; display:flex; flex-direction:column; }
+    .scooter-card:hover { transform:translateY(-5px); border-color:var(--orange); }
+    .card-image { height:200px; position:relative; overflow:hidden; display:flex; align-items:center; justify-content:center; border-bottom:1px solid var(--border); }
+    .card-image img { width:100%; height:100%; object-fit:cover; }
+    .card-image .emoji-fallback { font-size:5.5rem; }
+    .brand-badge { position:absolute; top:.6rem; left:.6rem; background:rgba(0,0,0,.65); backdrop-filter:blur(6px); border:1px solid rgba(255,255,255,.1); color:#fff; font-size:.7rem; font-weight:700; padding:.25rem .6rem; border-radius:20px; text-transform:uppercase; letter-spacing:.06em; }
+    .card-body { padding:1.25rem; flex:1; display:flex; flex-direction:column; gap:.75rem; }
+    .card-top { display:flex; justify-content:space-between; align-items:flex-start; gap:.5rem; }
+    .card-title { display:flex; flex-direction:column; gap:.1rem; }
+    .card-model-tag { font-size:.68rem; color:var(--orange); font-weight:700; text-transform:uppercase; letter-spacing:.1em; }
+    .card-name { font-size:1.15rem; font-weight:800; line-height:1.2; }
+    .stock-badge { font-size:.72rem; font-weight:700; padding:.25rem .6rem; border-radius:20px; white-space:nowrap; flex-shrink:0; }
+    .in-stock { background:rgba(34,197,94,.15); color:var(--green); border:1px solid rgba(34,197,94,.3); }
+    .out-stock { background:rgba(239,68,68,.15); color:var(--red); border:1px solid rgba(239,68,68,.3); }
+    .card-desc { font-size:.82rem; color:var(--muted); line-height:1.6; }
+    .specs-grid { display:grid; grid-template-columns:1fr 1fr; gap:.45rem .8rem; }
+    .spec-item label { font-size:.65rem; color:var(--muted); display:block; text-transform:uppercase; letter-spacing:.07em; }
+    .spec-item span { font-size:.82rem; font-weight:600; }
+    .card-footer { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:.5rem; margin-top:auto; }
+    .colors-row { display:flex; align-items:center; gap:.4rem; flex-wrap:wrap; }
+    .colors-label { font-size:.7rem; color:var(--muted); }
+    .color-dot { width:16px; height:16px; border-radius:50%; border:2px solid rgba(255,255,255,.15); cursor:default; transition:transform .15s; flex-shrink:0; }
+    .color-dot:hover { transform:scale(1.25); }
+    .price-tag { font-size:.9rem; font-weight:800; color:var(--orange); }
+
+    .contact-section { background:var(--card); border-top:1px solid var(--border); border-bottom:1px solid var(--border); padding:4rem 1.5rem; text-align:center; }
+    .contact-section h2 { font-size:clamp(1.6rem,4vw,2.2rem); font-weight:900; margin-bottom:.5rem; }
+    .contact-section h2 span { color:var(--orange); }
+    .contact-section>p { color:var(--muted); margin-bottom:2rem; }
+    .contact-cards { display:flex; gap:1.25rem; justify-content:center; flex-wrap:wrap; }
+    .contact-card { background:var(--darker); border:1px solid var(--border); border-radius:12px; padding:1.5rem 2rem; min-width:220px; }
+    .contact-card .cc-icon { font-size:2rem; margin-bottom:.5rem; }
+    .contact-card h3 { font-size:.85rem; color:var(--muted); margin-bottom:.4rem; }
+    .contact-card a { color:var(--orange); font-size:1.1rem; font-weight:700; text-decoration:none; }
+    .contact-card a:hover { text-decoration:underline; }
+
+    footer { text-align:center; padding:2rem 1.5rem; font-size:.8rem; color:var(--muted); }
+    footer strong { color:var(--orange); }
+
+    .modal-overlay { position:fixed; inset:0; z-index:200; background:rgba(0,0,0,.78); backdrop-filter:blur(4px); display:flex; align-items:center; justify-content:center; padding:1rem; }
+    .modal { background:var(--card); border:1px solid var(--border); border-radius:16px; padding:2rem; width:100%; max-width:580px; max-height:90vh; overflow-y:auto; }
+    .modal h2 { font-size:1.4rem; font-weight:900; margin-bottom:.5rem; }
+    .modal h2 span { color:var(--orange); }
+    .modal>p { color:var(--muted); font-size:.9rem; margin-bottom:1.5rem; }
+    .form-row { margin-bottom:1rem; }
+    .form-row label { display:block; font-size:.78rem; font-weight:600; margin-bottom:.4rem; color:var(--muted); text-transform:uppercase; letter-spacing:.05em; }
+    .form-row input,.form-row textarea { width:100%; background:var(--darker); border:1px solid var(--border); color:var(--text); padding:.65rem .85rem; border-radius:8px; font-size:.93rem; outline:none; transition:border-color .2s; }
+    .form-row input:focus,.form-row textarea:focus { border-color:var(--orange); }
+    .form-row textarea { resize:vertical; min-height:60px; }
+    .form-grid { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+    @media(max-width:480px){.form-grid{grid-template-columns:1fr;}}
+    .modal-actions { display:flex; gap:.75rem; justify-content:flex-end; margin-top:1.5rem; }
+    .btn-cancel { background:none; border:1px solid var(--border); color:var(--muted); padding:.6rem 1.25rem; border-radius:8px; font-size:.9rem; cursor:pointer; }
+    .btn-cancel:hover { border-color:var(--text); color:var(--text); }
+    .btn-add { background:var(--orange); color:#fff; border:none; padding:.6rem 1.5rem; border-radius:8px; font-size:.9rem; font-weight:700; cursor:pointer; }
+    .lookup-status { font-size:.78rem; padding:.45rem .7rem; border-radius:6px; margin-top:.4rem; }
+    .lookup-ok { background:rgba(34,197,94,.1); color:var(--green); }
+    .lookup-miss { background:rgba(240,78,26,.08); color:var(--orange); }
+    .lookup-loading { background:rgba(255,255,255,.04); color:var(--muted); }
+    .pin-form { display:flex; flex-direction:column; gap:1rem; }
+    .pin-error { color:var(--red); font-size:.85rem; text-align:center; }
+    .toast { position:fixed; bottom:1.5rem; left:50%; transform:translateX(-50%); background:var(--green); color:#fff; padding:.7rem 1.5rem; border-radius:8px; font-weight:700; font-size:.9rem; z-index:300; animation:toast-in .3s ease; }
+    @keyframes toast-in{from{opacity:0;transform:translate(-50%,20px);}to{opacity:1;transform:translate(-50%,0);}}
+    .empty-state { grid-column:1/-1; text-align:center; padding:5rem 1rem; color:var(--muted); }
+    .empty-state .empty-icon { font-size:4rem; margin-bottom:1rem; }
+
+    .bg-black   { background:linear-gradient(135deg,#1a1a1a,#0a0a0a); }
+    .bg-red     { background:linear-gradient(135deg,#3a0a0a,#1a0505); }
+    .bg-blue    { background:linear-gradient(135deg,#0a1a3a,#050a1a); }
+    .bg-sport   { background:linear-gradient(135deg,#1a0a0a,#0a0808); }
   </style>
 </head>
 <body>
@@ -159,8 +185,18 @@
 
 <div class="section-header" id="fleet">
   <h2>Our <span>Fleet</span></h2>
-  <p>In-stock scooters ready to ride — updated daily.</p>
+  <p>TaoTao &amp; Tank scooters in stock — ready to ride.</p>
 </div>
+
+<div class="filter-bar" id="filterBar">
+  <button class="filter-btn active" data-brand="all">All Models</button>
+  <button class="filter-btn" data-brand="TaoTao">TaoTao</button>
+  <button class="filter-btn" data-brand="Tank Sports">Tank Sports</button>
+  <button class="filter-btn" data-cc="50">50cc</button>
+  <button class="filter-btn" data-cc="150">150cc</button>
+  <button class="filter-btn" data-cc="250">250cc+</button>
+</div>
+
 <div class="catalog" id="catalog"></div>
 
 <section class="contact-section" id="contact">
@@ -168,25 +204,25 @@
   <p>Have questions, want a test ride, or need to check availability? We're here for you.</p>
   <div class="contact-cards">
     <div class="contact-card">
-      <div class="cc-icon">📞</div>
+      <div class="cc-icon">&#128222;</div>
       <h3>Call Rick directly</h3>
       <a href="tel:+15086667777">(508) 666-7777</a>
     </div>
     <div class="contact-card">
-      <div class="cc-icon">📍</div>
+      <div class="cc-icon">&#128205;</div>
       <h3>Visit the lot</h3>
       <a href="#contact">New England, USA</a>
     </div>
     <div class="contact-card">
-      <div class="cc-icon">🕐</div>
+      <div class="cc-icon">&#128336;</div>
       <h3>Hours</h3>
-      <a href="#contact">Mon–Sat 9am – 6pm</a>
+      <a href="#contact">Mon&#8211;Sat 9am &#8211; 6pm</a>
     </div>
   </div>
 </section>
 
 <footer>
-  <strong>RUNAMOKMOTO</strong> — Ride Unleashed &nbsp;|&nbsp; Call Rick: <a href="tel:+15086667777" style="color:var(--orange)">(508) 666-7777</a>
+  <strong>RUNAMOKMOTO</strong> &#8212; Ride Unleashed &nbsp;|&nbsp; Call Rick: <a href="tel:+15086667777" style="color:var(--orange)">(508) 666-7777</a>
   <br><br>&copy; 2025 RUNAMOKMOTO. All rights reserved.
 </footer>
 
@@ -195,87 +231,109 @@
 
 <script>
 var COLOR_MAP = {
-  "red":"#e53e3e","blue":"#3b82f6","white":"#f0f0f0","black":"#1a1a1a",
+  "red":"#e53e3e","blue":"#3b82f6","white":"#f0f0f0","black":"#111",
   "silver":"#a8a8a8","gray":"#6b6b6b","grey":"#6b6b6b","green":"#22c55e",
   "yellow":"#ecc94b","orange":"#f04e1a","purple":"#a855f7","pink":"#ec4899",
   "navy":"#1e3a5f","teal":"#14b8a6","cream":"#f5f0e8","gold":"#d97706",
-  "gunmetal":"#4a5568","chrome":"#cbd5e0","matte black":"#222",
-  "pearl white":"#f8f8f8","candy red":"#dc2626"
+  "gunmetal":"#4a5568","chrome":"#cbd5e0","matte black":"#1a1a1a",
+  "pearl white":"#f8f8f8","candy red":"#dc2626","maroon":"#7f1d1d"
 };
 
-var SCOOTER_DB = {
-  "honda pcx 150":   {brand:"Honda",engine:"149cc",power:"12.9 hp",topSpeed:"95 km/h",fuelTank:"8.1 L",weight:"130 kg",colors:["black","white","red","navy"],emoji:"🛵"},
-  "honda pcx":       {brand:"Honda",engine:"124cc",power:"12.6 hp",topSpeed:"95 km/h",fuelTank:"8.1 L",weight:"130 kg",colors:["black","white","red","navy"],emoji:"🛵"},
-  "honda forza 350": {brand:"Honda",engine:"330cc",power:"29 hp",topSpeed:"155 km/h",fuelTank:"11.5 L",weight:"199 kg",colors:["gray","black","silver"],emoji:"🏍️"},
-  "honda dio":       {brand:"Honda",engine:"109cc",power:"7 hp",topSpeed:"75 km/h",fuelTank:"4.5 L",weight:"95 kg",colors:["red","white","black"],emoji:"🛵"},
-  "yamaha nmax":     {brand:"Yamaha",engine:"155cc",power:"15 hp",topSpeed:"110 km/h",fuelTank:"6.6 L",weight:"131 kg",colors:["blue","black","white","red"],emoji:"🛵"},
-  "yamaha nmax 155": {brand:"Yamaha",engine:"155cc",power:"15 hp",topSpeed:"110 km/h",fuelTank:"6.6 L",weight:"131 kg",colors:["blue","black","white","red"],emoji:"🛵"},
-  "yamaha xmax 300": {brand:"Yamaha",engine:"292cc",power:"28 hp",topSpeed:"145 km/h",fuelTank:"13.2 L",weight:"179 kg",colors:["gunmetal","white","black"],emoji:"🏍️"},
-  "yamaha zuma 125": {brand:"Yamaha",engine:"125cc",power:"9.4 hp",topSpeed:"90 km/h",fuelTank:"5.3 L",weight:"105 kg",colors:["black","red","blue"],emoji:"🛵"},
-  "yamaha bws 125":  {brand:"Yamaha",engine:"125cc",power:"9 hp",topSpeed:"90 km/h",fuelTank:"5 L",weight:"108 kg",colors:["black","yellow","white"],emoji:"🛵"},
-  "vespa gts 300":   {brand:"Piaggio (Vespa)",engine:"300cc",power:"23.7 hp",topSpeed:"135 km/h",fuelTank:"9 L",weight:"170 kg",colors:["red","cream","black","silver","navy"],emoji:"🛵"},
-  "vespa primavera": {brand:"Piaggio (Vespa)",engine:"155cc",power:"12.4 hp",topSpeed:"95 km/h",fuelTank:"7 L",weight:"130 kg",colors:["cream","green","silver","red"],emoji:"🛵"},
-  "vespa sprint":    {brand:"Piaggio (Vespa)",engine:"155cc",power:"12.4 hp",topSpeed:"95 km/h",fuelTank:"7 L",weight:"130 kg",colors:["white","red","black","cream"],emoji:"🛵"},
-  "vespa 150":       {brand:"Piaggio (Vespa)",engine:"149cc",power:"12 hp",topSpeed:"95 km/h",fuelTank:"7 L",weight:"125 kg",colors:["cream","red","black"],emoji:"🛵"},
-  "kymco like 150i": {brand:"Kymco",engine:"149cc",power:"13 hp",topSpeed:"95 km/h",fuelTank:"7.5 L",weight:"128 kg",colors:["black","white","green","red"],emoji:"🛵"},
-  "kymco ak 550":    {brand:"Kymco",engine:"550cc",power:"53 hp",topSpeed:"190 km/h",fuelTank:"14.8 L",weight:"236 kg",colors:["black","gray"],emoji:"🏍️"},
-  "sym jet x":       {brand:"SYM",engine:"125cc",power:"9 hp",topSpeed:"85 km/h",fuelTank:"6 L",weight:"110 kg",colors:["red","black","white"],emoji:"🛵"},
-  "sym maxsym tl":   {brand:"SYM",engine:"500cc",power:"45 hp",topSpeed:"180 km/h",fuelTank:"14 L",weight:"230 kg",colors:["black","silver"],emoji:"🏍️"},
-  "piaggio beverly": {brand:"Piaggio",engine:"350cc",power:"35 hp",topSpeed:"160 km/h",fuelTank:"12 L",weight:"197 kg",colors:["gray","black","silver"],emoji:"🏍️"},
-  "piaggio mp3":     {brand:"Piaggio",engine:"350cc",power:"35 hp",topSpeed:"155 km/h",fuelTank:"12 L",weight:"272 kg",colors:["black","gray"],emoji:"🏍️"},
-  "aprilia sr 150":  {brand:"Aprilia",engine:"150cc",power:"14 hp",topSpeed:"100 km/h",fuelTank:"7 L",weight:"115 kg",colors:["black","red","white"],emoji:"🛵"},
-  "niu nqi gt":      {brand:"NIU",engine:"Electric",power:"4 kW",topSpeed:"70 km/h",fuelTank:"N/A (Electric)",weight:"108 kg",colors:["black","white","red"],emoji:"⚡"},
-  "niu mqi+":        {brand:"NIU",engine:"Electric",power:"1.5 kW",topSpeed:"45 km/h",fuelTank:"N/A (Electric)",weight:"82 kg",colors:["black","white","blue"],emoji:"⚡"},
-  "super soco tc":   {brand:"Super Soco",engine:"Electric",power:"3 kW",topSpeed:"75 km/h",fuelTank:"N/A (Electric)",weight:"100 kg",colors:["black","green","red"],emoji:"⚡"}
-};
-
-var inventory = JSON.parse(localStorage.getItem('runamokmoto_inventory') || 'null') || [
-  {id:1,name:"PCX 150",brand:"Honda",engine:"149cc",power:"12.9 hp",topSpeed:"95 km/h",fuelTank:"8.1 L",weight:"130 kg",colors:["black","white","red","navy"],stock:3,emoji:"🛵"},
-  {id:2,name:"NMax 155",brand:"Yamaha",engine:"155cc",power:"15 hp",topSpeed:"110 km/h",fuelTank:"6.6 L",weight:"131 kg",colors:["blue","black","white"],stock:2,emoji:"🛵"},
-  {id:3,name:"Vespa GTS 300",brand:"Piaggio (Vespa)",engine:"300cc",power:"23.7 hp",topSpeed:"135 km/h",fuelTank:"9 L",weight:"170 kg",colors:["red","cream","silver","navy"],stock:1,emoji:"🛵"},
-  {id:4,name:"NIU NQi GT",brand:"NIU",engine:"Electric",power:"4 kW",topSpeed:"70 km/h",fuelTank:"N/A (Electric)",weight:"108 kg",colors:["black","white","red"],stock:0,emoji:"⚡"}
+var DEFAULT_INVENTORY = [
+  {id:101,brand:"TaoTao",model:"ATM50-A1",name:"Classic 50 (Pony 50)",cc:50,engine:"49cc 4-stroke air-cooled",power:"2.1 hp",topSpeed:"35 mph",fuelTank:"1.2 gal",weight:"190 lbs",transmission:"Fully Automatic CVT",brakes:"Front Disc / Rear Drum",tires:"100/60-10 front & rear",mpg:"100+",colors:["black","red","blue","pink","green","white"],desc:"The original TaoTao classic — compact, reliable, and stupidly fun. Perfect for commuters and first-time riders. Comes with matching rear trunk, LED lights, and electric start with kick-start backup.",stock:4,emoji:"&#x1F6F5;",bgClass:"bg-black",price:"$749"},
+  {id:102,brand:"TaoTao",model:"CY50-A",name:"CY50-A Speed 50",cc:50,engine:"49cc 4-stroke air-cooled",power:"2.3 hp",topSpeed:"35 mph",fuelTank:"1.2 gal",weight:"185 lbs",transmission:"Fully Automatic CVT",brakes:"Front Disc / Rear Drum",tires:"100/60-10 front & rear",mpg:"100+",colors:["matte black","red","blue","white"],desc:"Sleek and streamlined, the CY50-A is TaoTao's sporty take on the classic 50cc moped. Its low seat height and lightweight frame make it ideal for city riding and tight parking.",stock:3,emoji:"&#x1F6F5;",bgClass:"bg-black",price:"$769"},
+  {id:103,brand:"TaoTao",model:"Thunder 50 / Blade 50",name:"Thunder 50",cc:50,engine:"49cc 4-stroke air-cooled",power:"3.26 hp",topSpeed:"38 mph",fuelTank:"1.3 gal",weight:"190 lbs",transmission:"Fully Automatic CVT",brakes:"Front Disc / Rear Drum",tires:"120/70-12 polished aluminum rims",mpg:"90+",colors:["black","red","blue","white","silver"],desc:"Bigger tires, more attitude. The Thunder 50 rolls on 12-inch polished aluminum rims with dual rear shock absorbers and an upgraded suspension system. Street legal in most states. Comes with matching trunk.",stock:5,emoji:"&#x1F6F5;",bgClass:"bg-black",price:"$849"},
+  {id:104,brand:"TaoTao",model:"EVO 50",name:"EVO 50 Full-Size",cc:50,engine:"49cc 4-stroke air-cooled",power:"2.1 hp",topSpeed:"32 mph",fuelTank:"1.2 gal",weight:"205 lbs",transmission:"Fully Automatic CVT",brakes:"Front Disc / Rear Drum",tires:"120/70-12 aluminum rims",mpg:"100+",colors:["black","red","white"],desc:"All the presence of a 150cc in a 50cc package. The EVO 50 wraps a fuel-sipping 50cc engine in a full-size body — ideal where 50cc rules apply but you still want to look the part.",stock:2,emoji:"&#x1F6F5;",bgClass:"bg-black",price:"$879"},
+  {id:105,brand:"TaoTao",model:"GT5-50",name:"GT5-50 Moped",cc:50,engine:"49cc 4-stroke air-cooled",power:"2.0 hp",topSpeed:"32 mph",fuelTank:"1.1 gal",weight:"180 lbs",transmission:"Fully Automatic CVT",brakes:"Front Disc / Rear Drum",tires:"120/70-12",mpg:"100+",colors:["black","red","blue"],desc:"Classic moped form factor with a large rear trunk and 12-inch tires. The GT5-50 is the no-fuss daily rider — light, economical, and dead-simple to operate.",stock:3,emoji:"&#x1F6F5;",bgClass:"bg-black",price:"$799"},
+  {id:201,brand:"TaoTao",model:"PMX150 Powermax",name:"Powermax 150",cc:150,engine:"149cc 4-stroke air-cooled single-cylinder GY6",power:"10 hp",topSpeed:"55+ mph",fuelTank:"1.4 gal",weight:"258 lbs",transmission:"Fully Automatic CVT Belt Drive",brakes:"Front Hydraulic Disc / Rear Drum",tires:"120/70-12 front & rear",mpg:"80+",colors:["blue","red","black","white","orange"],desc:"TaoTao's bestselling 150cc — the Powermax packs real highway power into a scooter that rides smooth and looks sharp. Chrome wheels, a free matching trunk, and enough zip to keep up with city traffic.",stock:6,emoji:"&#x1F6F5;",bgClass:"bg-blue",price:"$1,099"},
+  {id:202,brand:"TaoTao",model:"Pilot 150",name:"Pilot 150",cc:150,engine:"149cc 4-stroke air-cooled single-cylinder GY6",power:"10 hp",topSpeed:"55+ mph",fuelTank:"1.4 gal",weight:"258 lbs",transmission:"Fully Automatic CVT",brakes:"Front Hydraulic Disc / Rear Drum",tires:"120/70-12 chrome rims",mpg:"80+",colors:["black","red","blue","white"],desc:"The Pilot 150 steps up with polished chrome rims and a more aggressive front fairing. Includes a free matching trunk and helmet. Same rock-solid GY6 engine as the Powermax, with added style.",stock:3,emoji:"&#x1F6F5;",bgClass:"bg-red",price:"$1,149"},
+  {id:203,brand:"TaoTao",model:"CY150D SuperScooter",name:"CY150D SuperScooter",cc:150,engine:"149cc 4-stroke air-cooled single-cylinder GY6",power:"10.5 hp",topSpeed:"58 mph",fuelTank:"1.5 gal",weight:"260 lbs",transmission:"Fully Automatic CVT",brakes:"Front Hydraulic Disc / Rear Drum",tires:"120/70-12",mpg:"75+",colors:["red","black","blue","white"],desc:"The CY150D earns the Super name with a slightly higher-output GY6 engine, larger fuel tank, and roomier underseat storage. Great for longer daily commutes where you need a bit more confidence on the road.",stock:2,emoji:"&#x1F6F5;",bgClass:"bg-red",price:"$1,199"},
+  {id:204,brand:"TaoTao",model:"Quantum Tour 150",name:"Quantum Tour 150",cc:150,engine:"149cc 4-stroke air-cooled single-cylinder GY6",power:"10 hp",topSpeed:"60 mph",fuelTank:"1.32 gal",weight:"302 lbs",transmission:"Fully Automatic CVT",brakes:"ABS Front Disc / Rear Disc",tires:"120/70-13 big sport wheels",mpg:"81",colors:["black","red","white","blue"],desc:"TaoTao's flagship commuter. The Quantum Tour rolls on 13-inch sport wheels, ABS disc brakes front and rear, full LED lighting package, and a digital instrument cluster. Built for the rider who means business.",stock:4,emoji:"&#x1F6F5;",bgClass:"bg-black",price:"$1,349"},
+  {id:205,brand:"TaoTao",model:"Galaxy 150",name:"Galaxy 150",cc:150,engine:"149cc 4-stroke air-cooled single-cylinder GY6",power:"10 hp",topSpeed:"58 mph",fuelTank:"1.3 gal",weight:"275 lbs",transmission:"Fully Automatic CVT",brakes:"Front Disc / Rear Drum",tires:"120/70-13 sport wheels",mpg:"78+",colors:["black","red","blue","silver"],desc:"The Galaxy 150 brings a sportier edge with 13-inch tires and a dynamic fairing that turns heads. Upgraded suspension and a roomier passenger seat make this one of TaoTao's most versatile 150cc options.",stock:3,emoji:"&#x1F6F5;",bgClass:"bg-black",price:"$1,249"},
+  {id:301,brand:"TaoTao",model:"TBR7 250",name:"TBR7 250 Dual Sport",cc:250,engine:"229cc 4-stroke air-cooled single-cylinder",power:"18 hp",topSpeed:"70 mph",fuelTank:"2.6 gal",weight:"310 lbs",transmission:"5-Speed Manual",brakes:"Dual Disc (front & rear)",tires:"90/90-18 front / 110/90-16 rear",mpg:"70+",colors:["red","black","white"],desc:"The beast of the lineup. The TBR7 250 is TaoTao's dual-sport motorcycle — part streetfighter, part trail warrior. Electric and kick start, aggressive enduro styling, and enough torque to make every commute an adventure. Street legal in 49 states.",stock:2,emoji:"&#x1F3CD;",bgClass:"bg-sport",price:"$1,799"},
+  {id:401,brand:"Tank Sports",model:"Urban 150",name:"Urban 150",cc:150,engine:"149cc 4-stroke air-cooled single-cylinder",power:"9 hp",topSpeed:"55 mph",fuelTank:"1.0 gal",weight:"259 lbs",transmission:"Fully Automatic CVT",brakes:"Front Disc / Rear Drum",tires:"120/70-12",mpg:"80+",colors:["black","red","blue","silver"],desc:"Tank Sports' entry-level city scooter. The Urban 150 keeps things simple: reliable 149cc power, comfortable upright seating, and a clean look that doesn't scream budget. Great for parking-lot-sized gaps in traffic.",stock:3,emoji:"&#x1F6F5;",bgClass:"bg-black",price:"$1,095"},
+  {id:402,brand:"Tank Sports",model:"Urban Touring 150",name:"Urban Touring 150",cc:150,engine:"149cc 4-stroke air-cooled single-cylinder",power:"8.84 hp",topSpeed:"55 mph",fuelTank:"1.0 gal",weight:"253 lbs",transmission:"Fully Automatic CVT Shaft Drive",brakes:"Front Disc / Rear Drum",tires:"120/70-12",mpg:"80+",colors:["black","silver","red","cream"],desc:"The Touring edition adds wind protection, extra storage, and premium comfort touches for the rider who actually tours. Shaft drive keeps maintenance minimal. Wide padded seat, twin glove boxes, large under-seat storage, and a digital cluster.",stock:2,emoji:"&#x1F6F5;",bgClass:"bg-black",price:"$1,295"},
+  {id:403,brand:"Tank Sports",model:"Urban Sporty 150",name:"Urban Sporty 150",cc:150,engine:"149cc 4-stroke air-cooled single-cylinder",power:"9.5 hp",topSpeed:"58 mph",fuelTank:"1.1 gal",weight:"248 lbs",transmission:"Fully Automatic CVT",brakes:"Front Hydraulic Disc / Rear Drum",tires:"120/70-12 sport",mpg:"78+",colors:["black","red","blue","white"],desc:"Tank's sporty streetfighter. Aggressive angular bodywork, sport-tuned suspension, and that extra 0.5 hp make the Urban Sporty the go-to for riders who want the zip of a sport bike at scooter-friendly prices.",stock:4,emoji:"&#x1F6F5;",bgClass:"bg-red",price:"$1,195"},
+  {id:404,brand:"Tank Sports",model:"Urban Racer 150",name:"Urban Racer 150",cc:150,engine:"149cc 4-stroke air-cooled single-cylinder",power:"10 hp",topSpeed:"60 mph",fuelTank:"1.1 gal",weight:"245 lbs",transmission:"Fully Automatic CVT",brakes:"Front & Rear Hydraulic Disc",tires:"120/70-12 performance",mpg:"75+",colors:["black","red","white","blue"],desc:"Race-inspired bodywork, dual disc brakes, and the most power in Tank's lineup. The Urban Racer 150 is the top of the pack — built for riders who want maximum performance from a 150cc scooter.",stock:2,emoji:"&#x1F3CD;",bgClass:"bg-sport",price:"$1,395"}
 ];
 
-function save(){localStorage.setItem('runamokmoto_inventory',JSON.stringify(inventory));}
+var inventory = JSON.parse(localStorage.getItem('runamokmoto_v2') || 'null') || DEFAULT_INVENTORY;
+function save(){ localStorage.setItem('runamokmoto_v2', JSON.stringify(inventory)); }
+
+var activeFilters = { brand:'all', cc:null };
+
+document.getElementById('filterBar').addEventListener('click', function(e){
+  var btn = e.target.closest('.filter-btn');
+  if(!btn) return;
+  document.querySelectorAll('.filter-btn').forEach(function(b){ b.classList.remove('active'); });
+  btn.classList.add('active');
+  if(btn.dataset.brand !== undefined) { activeFilters.brand = btn.dataset.brand; activeFilters.cc = null; }
+  else if(btn.dataset.cc !== undefined) { activeFilters.cc = btn.dataset.cc; activeFilters.brand = 'all'; }
+  renderCatalog();
+});
 
 function renderCatalog(){
-  var el=document.getElementById('catalog');
-  if(!inventory.length){
-    el.innerHTML='<div class="empty-state"><div class="empty-icon">🛵</div><p>No scooters in inventory yet.<br>Check back soon or call Rick!</p></div>';
+  var el = document.getElementById('catalog');
+  var list = inventory.filter(function(s){
+    if(activeFilters.brand !== 'all' && s.brand !== activeFilters.brand) return false;
+    if(activeFilters.cc){
+      var cc = parseInt(activeFilters.cc);
+      if(cc === 50 && s.cc !== 50) return false;
+      if(cc === 150 && s.cc !== 150) return false;
+      if(cc === 250 && s.cc < 200) return false;
+    }
+    return true;
+  });
+  if(!list.length){
+    el.innerHTML = '<div class="empty-state"><div class="empty-icon">&#x1F6F5;</div><p>No scooters match that filter.<br>Try a different category or call Rick!</p></div>';
     return;
   }
-  el.innerHTML=inventory.map(function(s){
-    var badge=s.stock>0
-      ?'<span class="stock-badge in-stock">✓ '+s.stock+' in stock</span>'
-      :'<span class="stock-badge out-stock">Out of Stock</span>';
-    var dots=(s.colors||[]).map(function(c){
-      var hex=COLOR_MAP[c.toLowerCase()]||'#888';
-      var b=c.toLowerCase()==='black'?'border:2px solid #444;':'';
+  el.innerHTML = list.map(function(s){
+    var badge = s.stock > 0
+      ? '<span class="stock-badge in-stock">&#10003; '+s.stock+' in stock</span>'
+      : '<span class="stock-badge out-stock">Out of Stock</span>';
+    var dots = (s.colors||[]).map(function(c){
+      var hex = COLOR_MAP[c.toLowerCase()]||'#888';
+      var b = (c==='black'||c==='matte black') ? 'border:2px solid #444;' : '';
       return '<span class="color-dot" title="'+c+'" style="background:'+hex+';'+b+'"></span>';
     }).join('');
+    var imgSection = s.img
+      ? '<img src="'+s.img+'" alt="'+s.name+'"/>'
+      : '<span class="emoji-fallback">'+(s.emoji||'&#x1F6F5;')+'</span>';
     return '<div class="scooter-card">'
-      +'<div class="card-image">'+(s.emoji||'🛵')+'</div>'
-      +'<div class="card-body">'
-      +'<div class="card-top"><div>'
-      +'<div class="card-brand">'+s.brand+'</div>'
-      +'<div class="card-name">'+s.name+'</div>'
-      +'</div>'+badge+'</div>'
-      +'<div class="specs-grid">'
-      +'<div class="spec-item"><label>Engine</label><span>'+(s.engine||'—')+'</span></div>'
-      +'<div class="spec-item"><label>Power</label><span>'+(s.power||'—')+'</span></div>'
-      +'<div class="spec-item"><label>Top Speed</label><span>'+(s.topSpeed||'—')+'</span></div>'
-      +'<div class="spec-item"><label>Fuel Tank</label><span>'+(s.fuelTank||'—')+'</span></div>'
-      +'<div class="spec-item"><label>Weight</label><span>'+(s.weight||'—')+'</span></div>'
+      +'<div class="card-image '+(s.bgClass||'bg-black')+'">'
+        +'<span class="brand-badge">'+s.brand+'</span>'
+        +imgSection
       +'</div>'
-      +'<div class="colors-row"><span class="colors-label">Colors:</span>'
-      +(dots||'<span style="color:var(--muted);font-size:.8rem">N/A</span>')
-      +'</div></div></div>';
+      +'<div class="card-body">'
+        +'<div class="card-top">'
+          +'<div class="card-title">'
+            +'<div class="card-model-tag">'+(s.model||'')+'</div>'
+            +'<div class="card-name">'+s.name+'</div>'
+          +'</div>'+badge
+        +'</div>'
+        +'<p class="card-desc">'+(s.desc||'')+'</p>'
+        +'<div class="specs-grid">'
+          +'<div class="spec-item"><label>Engine</label><span>'+(s.engine||'&#8212;')+'</span></div>'
+          +'<div class="spec-item"><label>Power</label><span>'+(s.power||'&#8212;')+'</span></div>'
+          +'<div class="spec-item"><label>Top Speed</label><span>'+(s.topSpeed||'&#8212;')+'</span></div>'
+          +'<div class="spec-item"><label>Transmission</label><span>'+(s.transmission||'&#8212;')+'</span></div>'
+          +'<div class="spec-item"><label>Brakes</label><span>'+(s.brakes||'&#8212;')+'</span></div>'
+          +'<div class="spec-item"><label>Tires</label><span>'+(s.tires||'&#8212;')+'</span></div>'
+          +'<div class="spec-item"><label>Fuel Tank</label><span>'+(s.fuelTank||'&#8212;')+'</span></div>'
+          +'<div class="spec-item"><label>Fuel Economy</label><span>'+(s.mpg||'&#8212;')+' mpg</span></div>'
+          +'<div class="spec-item"><label>Weight</label><span>'+(s.weight||'&#8212;')+'</span></div>'
+        +'</div>'
+        +'<div class="card-footer">'
+          +'<div class="colors-row"><span class="colors-label">Colors:</span>'+dots+'</div>'
+          +'<div class="price-tag">'+(s.price||'Call for price')+'</div>'
+        +'</div>'
+      +'</div>'
+    +'</div>';
   }).join('');
 }
 
-var ADMIN_PIN='1234';
-var adminUnlocked=false;
-var lookupTimer=null;
+var ADMIN_PIN='1234', adminUnlocked=false, lookupTimer=null;
 
 function showToast(msg,isErr){
   var t=document.getElementById('toast-root');
@@ -283,119 +341,133 @@ function showToast(msg,isErr){
   setTimeout(function(){t.innerHTML='';},3000);
 }
 
+var QUICK_DB = {
+  "taotao atm50":  {brand:"TaoTao",engine:"49cc 4-stroke air-cooled",power:"2.1 hp",topSpeed:"35 mph",fuelTank:"1.2 gal",weight:"190 lbs",transmission:"Auto CVT",brakes:"Front Disc / Rear Drum",tires:"100/60-10",mpg:"100+",colors:"black, red, blue",price:"$749",desc:"Classic TaoTao 50cc moped."},
+  "taotao powermax":{brand:"TaoTao",engine:"149cc GY6 4-stroke",power:"10 hp",topSpeed:"55+ mph",fuelTank:"1.4 gal",weight:"258 lbs",transmission:"Auto CVT",brakes:"Front Disc / Rear Drum",tires:"120/70-12",mpg:"80+",colors:"blue, red, black",price:"$1,099",desc:"TaoTao's bestselling 150cc scooter."},
+  "taotao quantum": {brand:"TaoTao",engine:"149cc GY6 4-stroke",power:"10 hp",topSpeed:"60 mph",fuelTank:"1.32 gal",weight:"302 lbs",transmission:"Auto CVT",brakes:"ABS Disc front & rear",tires:"120/70-13",mpg:"81",colors:"black, red, white",price:"$1,349",desc:"TaoTao flagship with ABS and 13-inch wheels."},
+  "taotao tbr7":   {brand:"TaoTao",engine:"229cc 4-stroke",power:"18 hp",topSpeed:"70 mph",fuelTank:"2.6 gal",weight:"310 lbs",transmission:"5-Speed Manual",brakes:"Dual Disc",tires:"90/90-18 front",mpg:"70+",colors:"red, black, white",price:"$1,799",desc:"TaoTao dual sport motorcycle."},
+  "tank urban":    {brand:"Tank Sports",engine:"149cc 4-stroke",power:"9 hp",topSpeed:"55 mph",fuelTank:"1.0 gal",weight:"259 lbs",transmission:"Auto CVT",brakes:"Front Disc / Rear Drum",tires:"120/70-12",mpg:"80+",colors:"black, red, silver",price:"$1,095",desc:"Tank Sports city commuter scooter."},
+  "tank touring":  {brand:"Tank Sports",engine:"149cc 4-stroke",power:"8.84 hp",topSpeed:"55 mph",fuelTank:"1.0 gal",weight:"253 lbs",transmission:"Auto CVT Shaft Drive",brakes:"Front Disc / Rear Drum",tires:"120/70-12",mpg:"80+",colors:"black, silver, cream",price:"$1,295",desc:"Tank Sports touring scooter."},
+  "tank sporty":   {brand:"Tank Sports",engine:"149cc 4-stroke",power:"9.5 hp",topSpeed:"58 mph",fuelTank:"1.1 gal",weight:"248 lbs",transmission:"Auto CVT",brakes:"Front Disc / Rear Drum",tires:"120/70-12",mpg:"78+",colors:"black, red, blue",price:"$1,195",desc:"Tank Sports sport scooter."},
+  "tank racer":    {brand:"Tank Sports",engine:"149cc 4-stroke",power:"10 hp",topSpeed:"60 mph",fuelTank:"1.1 gal",weight:"245 lbs",transmission:"Auto CVT",brakes:"Dual Disc",tires:"120/70-12",mpg:"75+",colors:"black, red, white",price:"$1,395",desc:"Tank Sports top performance scooter."}
+};
+
 function lookupScooter(name){
   var key=name.trim().toLowerCase();
-  if(SCOOTER_DB[key])return SCOOTER_DB[key];
-  var words=key.split(/\s+/);
-  var keys=Object.keys(SCOOTER_DB);
-  for(var i=0;i<keys.length;i++){
-    var k=keys[i];
-    if(words.every(function(w){return k.indexOf(w)>=0;}))return SCOOTER_DB[k];
+  for(var k in QUICK_DB){
+    if(key.indexOf(k)>=0||k.indexOf(key)>=0) return QUICK_DB[k];
+    var words=key.split(/\s+/),kwords=k.split(/\s+/);
+    if(words.some(function(w){return kwords.some(function(kw){return kw.indexOf(w)>=0&&w.length>3;});})) return QUICK_DB[k];
   }
   return null;
-}
-
-function populateForm(data){
-  document.getElementById('f-brand').value=data.brand||'';
-  document.getElementById('f-engine').value=data.engine||'';
-  document.getElementById('f-power').value=data.power||'';
-  document.getElementById('f-topspeed').value=data.topSpeed||'';
-  document.getElementById('f-fueltank').value=data.fuelTank||'';
-  document.getElementById('f-weight').value=data.weight||'';
-  document.getElementById('f-colors').value=(data.colors||[]).join(', ');
 }
 
 function renderAdminModal(){
   var root=document.getElementById('modal-root');
   if(!adminUnlocked){
     root.innerHTML='<div class="modal-overlay" id="modal-overlay"><div class="modal">'
-      +'<h2>Admin <span>Login</span></h2>'
-      +'<p>Enter your PIN to access the inventory manager.</p>'
-      +'<div class="pin-form">'
-      +'<div class="form-row"><label>Admin PIN</label>'
-      +'<input type="password" id="pin-input" placeholder="••••" maxlength="10"/></div>'
-      +'<div id="pin-error" class="pin-error" style="display:none">Incorrect PIN. Try again.</div>'
-      +'<div class="modal-actions">'
-      +'<button class="btn-cancel" onclick="closeAdmin()">Cancel</button>'
-      +'<button class="btn-add" onclick="checkPin()">Unlock</button>'
-      +'</div></div></div></div>';
+      +'<h2>Admin <span>Login</span></h2><p>Enter your PIN to manage the fleet inventory.</p>'
+      +'<div class="pin-form"><div class="form-row"><label>Admin PIN</label>'
+      +'<input type="password" id="pin-input" placeholder="&#8226;&#8226;&#8226;&#8226;" maxlength="10"/></div>'
+      +'<div id="pin-error" class="pin-error" style="display:none">Incorrect PIN.</div>'
+      +'<div class="modal-actions"><button class="btn-cancel" onclick="closeAdmin()">Cancel</button>'
+      +'<button class="btn-add" onclick="checkPin()">Unlock</button></div></div></div></div>';
     document.getElementById('pin-input').addEventListener('keydown',function(e){if(e.key==='Enter')checkPin();});
   } else {
     root.innerHTML='<div class="modal-overlay" id="modal-overlay"><div class="modal">'
-      +'<h2>Add <span>Scooter</span></h2>'
-      +'<p>Type the scooter name and specs will auto-fill from our database. Adjust anything needed.</p>'
-      +'<div class="form-row"><label>Scooter Name *</label>'
-      +'<input type="text" id="f-name" placeholder="e.g. Honda PCX 150, Vespa GTS 300..."/>'
+      +'<h2>Add <span>Scooter</span></h2><p>Enter a model name and specs will auto-fill. Fine-tune anything below.</p>'
+      +'<div class="form-row"><label>Model Name *</label>'
+      +'<input type="text" id="f-name" placeholder="e.g. TaoTao Powermax 150, Tank Urban Sporty..."/>'
       +'<div id="lookup-status" class="lookup-status" style="display:none"></div></div>'
       +'<div class="form-grid">'
-      +'<div class="form-row"><label>Brand</label><input type="text" id="f-brand" placeholder="Honda"/></div>'
-      +'<div class="form-row"><label>Engine</label><input type="text" id="f-engine" placeholder="150cc"/></div>'
-      +'<div class="form-row"><label>Power</label><input type="text" id="f-power" placeholder="12 hp"/></div>'
-      +'<div class="form-row"><label>Top Speed</label><input type="text" id="f-topspeed" placeholder="95 km/h"/></div>'
-      +'<div class="form-row"><label>Fuel Tank</label><input type="text" id="f-fueltank" placeholder="8 L"/></div>'
-      +'<div class="form-row"><label>Weight</label><input type="text" id="f-weight" placeholder="130 kg"/></div>'
+      +'<div class="form-row"><label>Brand</label><input type="text" id="f-brand" placeholder="TaoTao"/></div>'
+      +'<div class="form-row"><label>Model Code</label><input type="text" id="f-model" placeholder="PMX150"/></div>'
+      +'<div class="form-row"><label>Engine</label><input type="text" id="f-engine" placeholder="149cc GY6"/></div>'
+      +'<div class="form-row"><label>Power</label><input type="text" id="f-power" placeholder="10 hp"/></div>'
+      +'<div class="form-row"><label>Top Speed</label><input type="text" id="f-topspeed" placeholder="55 mph"/></div>'
+      +'<div class="form-row"><label>Transmission</label><input type="text" id="f-trans" placeholder="Auto CVT"/></div>'
+      +'<div class="form-row"><label>Brakes</label><input type="text" id="f-brakes" placeholder="Front Disc / Rear Drum"/></div>'
+      +'<div class="form-row"><label>Tires</label><input type="text" id="f-tires" placeholder="120/70-12"/></div>'
+      +'<div class="form-row"><label>Fuel Tank</label><input type="text" id="f-fueltank" placeholder="1.4 gal"/></div>'
+      +'<div class="form-row"><label>Fuel Economy</label><input type="text" id="f-mpg" placeholder="80+"/></div>'
+      +'<div class="form-row"><label>Weight</label><input type="text" id="f-weight" placeholder="258 lbs"/></div>'
+      +'<div class="form-row"><label>Price</label><input type="text" id="f-price" placeholder="$1,099"/></div>'
       +'</div>'
-      +'<div class="form-row"><label>Colors (comma-separated)</label>'
-      +'<input type="text" id="f-colors" placeholder="black, white, red"/></div>'
-      +'<div class="form-row"><label>Units in Stock</label>'
-      +'<input type="number" id="f-stock" placeholder="1" min="0" value="1"/></div>'
-      +'<div class="modal-actions">'
-      +'<button class="btn-cancel" onclick="closeAdmin()">Cancel</button>'
-      +'<button class="btn-add" onclick="addScooter()">Add to Fleet</button>'
-      +'</div></div></div>';
+      +'<div class="form-row"><label>Description</label><textarea id="f-desc" placeholder="Brief description..."></textarea></div>'
+      +'<div class="form-row"><label>Colors (comma-separated)</label><input type="text" id="f-colors" placeholder="black, red, blue"/></div>'
+      +'<div class="form-row"><label>Units in Stock</label><input type="number" id="f-stock" min="0" value="1"/></div>'
+      +'<div class="modal-actions"><button class="btn-cancel" onclick="closeAdmin()">Cancel</button>'
+      +'<button class="btn-add" onclick="addScooter()">Add to Fleet</button></div></div></div>';
+
     document.getElementById('f-name').addEventListener('input',function(){
       clearTimeout(lookupTimer);
       var val=this.value.trim();
       var status=document.getElementById('lookup-status');
       if(!val){status.style.display='none';return;}
-      status.style.display='block';
-      status.className='lookup-status lookup-loading';
-      status.textContent='Looking up specs...';
+      status.style.display='block'; status.className='lookup-status lookup-loading'; status.textContent='Looking up specs...';
       lookupTimer=setTimeout(function(){
         var found=lookupScooter(val);
         if(found){
-          populateForm(found);
+          if(found.brand)        document.getElementById('f-brand').value=found.brand;
+          if(found.engine)       document.getElementById('f-engine').value=found.engine;
+          if(found.power)        document.getElementById('f-power').value=found.power;
+          if(found.topSpeed)     document.getElementById('f-topspeed').value=found.topSpeed;
+          if(found.transmission) document.getElementById('f-trans').value=found.transmission;
+          if(found.brakes)       document.getElementById('f-brakes').value=found.brakes;
+          if(found.tires)        document.getElementById('f-tires').value=found.tires;
+          if(found.fuelTank)     document.getElementById('f-fueltank').value=found.fuelTank;
+          if(found.mpg)          document.getElementById('f-mpg').value=found.mpg;
+          if(found.weight)       document.getElementById('f-weight').value=found.weight;
+          if(found.price)        document.getElementById('f-price').value=found.price;
+          if(found.colors)       document.getElementById('f-colors').value=found.colors;
+          if(found.desc)         document.getElementById('f-desc').value=found.desc;
           status.className='lookup-status lookup-ok';
-          status.textContent='✓ Specs loaded for '+found.brand+' — review and adjust if needed.';
+          status.textContent='Specs loaded for '+found.brand+' &#8212; review and adjust as needed.';
         } else {
           status.className='lookup-status lookup-miss';
-          status.textContent='⚠ Not in database — please enter specs manually below.';
+          status.textContent='Not in database &#8212; fill in specs manually below.';
         }
-      },600);
+      },550);
     });
   }
 }
 
 function checkPin(){
-  var val=document.getElementById('pin-input').value;
-  if(val===ADMIN_PIN){adminUnlocked=true;renderAdminModal();}
+  if(document.getElementById('pin-input').value===ADMIN_PIN){adminUnlocked=true;renderAdminModal();}
   else{document.getElementById('pin-error').style.display='block';document.getElementById('pin-input').value='';}
 }
 
 function addScooter(){
   var name=document.getElementById('f-name').value.trim();
-  if(!name){showToast('Please enter a scooter name.',true);return;}
-  var colorsRaw=document.getElementById('f-colors').value;
-  var colors=colorsRaw.split(',').map(function(c){return c.trim().toLowerCase();}).filter(Boolean);
-  var found=lookupScooter(name);
+  if(!name){showToast('Please enter a model name.',true);return;}
+  var colors=document.getElementById('f-colors').value.split(',').map(function(c){return c.trim().toLowerCase();}).filter(Boolean);
+  var eng=document.getElementById('f-engine').value;
+  var cc=/229|250|230|200/.test(eng)?250:/149|150/.test(eng)?150:50;
   inventory.push({
     id:Date.now(),name:name,
     brand:document.getElementById('f-brand').value.trim()||'Unknown',
-    engine:document.getElementById('f-engine').value.trim()||'—',
-    power:document.getElementById('f-power').value.trim()||'—',
-    topSpeed:document.getElementById('f-topspeed').value.trim()||'—',
-    fuelTank:document.getElementById('f-fueltank').value.trim()||'—',
-    weight:document.getElementById('f-weight').value.trim()||'—',
+    model:document.getElementById('f-model').value.trim()||name,
+    cc:cc,
+    engine:eng||'&#8212;',
+    power:document.getElementById('f-power').value.trim()||'&#8212;',
+    topSpeed:document.getElementById('f-topspeed').value.trim()||'&#8212;',
+    transmission:document.getElementById('f-trans').value.trim()||'Auto CVT',
+    brakes:document.getElementById('f-brakes').value.trim()||'&#8212;',
+    tires:document.getElementById('f-tires').value.trim()||'&#8212;',
+    fuelTank:document.getElementById('f-fueltank').value.trim()||'&#8212;',
+    mpg:document.getElementById('f-mpg').value.trim()||'&#8212;',
+    weight:document.getElementById('f-weight').value.trim()||'&#8212;',
+    price:document.getElementById('f-price').value.trim()||'Call for price',
+    desc:document.getElementById('f-desc').value.trim()||'',
     colors:colors,
     stock:parseInt(document.getElementById('f-stock').value)||0,
-    emoji:found?(found.emoji||'🛵'):'🛵'
+    emoji:cc>=200?'&#x1F3CD;':'&#x1F6F5;',bgClass:'bg-black'
   });
   save();renderCatalog();closeAdmin();
-  showToast('✓ '+name+' added to the fleet!');
+  showToast('&#10003; '+name+' added to the fleet!');
 }
 
 function closeAdmin(){document.getElementById('modal-root').innerHTML='';}
-
 document.getElementById('openAdminBtn').addEventListener('click',function(){renderAdminModal();});
 document.getElementById('modal-root').addEventListener('click',function(e){if(e.target.id==='modal-overlay')closeAdmin();});
 
