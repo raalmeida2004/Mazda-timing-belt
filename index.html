@@ -78,6 +78,9 @@
     .delete-btn { position:absolute; top:.6rem; right:.6rem; background:rgba(239,68,68,.85); border:none; color:#fff; width:28px; height:28px; border-radius:50%; font-size:1rem; line-height:1; cursor:pointer; display:flex; align-items:center; justify-content:center; opacity:0; transition:opacity .2s,transform .15s; }
     .scooter-card:hover .delete-btn { opacity:1; }
     .delete-btn:hover { transform:scale(1.15); background:var(--red); }
+    .edit-btn { position:absolute; top:.6rem; right:2.4rem; background:rgba(240,78,26,.85); border:none; color:#fff; width:28px; height:28px; border-radius:50%; font-size:.9rem; line-height:1; cursor:pointer; display:flex; align-items:center; justify-content:center; opacity:0; transition:opacity .2s,transform .15s; }
+    .scooter-card:hover .edit-btn { opacity:1; }
+    .edit-btn:hover { transform:scale(1.15); background:var(--orange); }
     .card-body { padding:1.25rem; flex:1; display:flex; flex-direction:column; gap:.75rem; }
     .card-top { display:flex; justify-content:space-between; align-items:flex-start; gap:.5rem; }
     .card-title { display:flex; flex-direction:column; gap:.1rem; }
@@ -317,10 +320,14 @@ function renderCatalog(){
     var delBtn = adminUnlocked
       ? '<button class="delete-btn" title="Remove from fleet" onclick="deleteScooter('+s.id+')">&#x2715;</button>'
       : '';
+    var editBtn = adminUnlocked
+      ? '<button class="edit-btn" title="Edit scooter" onclick="editScooter('+s.id+')">&#x270E;</button>'
+      : '';
     return '<div class="scooter-card">'
       +'<div class="card-image '+(s.bgClass||'bg-black')+'">'
         +'<span class="brand-badge">'+s.brand+'</span>'
         +delBtn
+        +editBtn
         +imgSection
       +'</div>'
       +'<div class="card-body">'
@@ -458,7 +465,7 @@ function checkPin(){
     document.getElementById('addScooterBtn').style.display='inline-block';
     closeAdmin();
     renderCatalog();
-    showToast('Admin mode on — hover a card to delete it.');
+    showToast('Admin mode on — hover a card to edit or delete it.');
   } else {
     document.getElementById('pin-error').style.display='block';
     document.getElementById('pin-input').value='';
@@ -493,6 +500,65 @@ function addScooter(){
   });
   save();renderCatalog();closeAdmin();
   showToast('&#10003; '+name+' added to the fleet!');
+}
+
+function editScooter(id){
+  if(!adminUnlocked) return;
+  var s = inventory.find(function(x){return x.id===id;});
+  if(!s) return;
+  var root=document.getElementById('modal-root');
+  root.innerHTML='<div class="modal-overlay" id="modal-overlay"><div class="modal">'
+    +'<h2>Edit <span>Scooter</span></h2><p>Update any fields below then save.</p>'
+    +'<div class="form-row"><label>Name</label><input type="text" id="e-name" value="'+esc(s.name)+'"/></div>'
+    +'<div class="form-grid">'
+    +'<div class="form-row"><label>Brand</label><input type="text" id="e-brand" value="'+esc(s.brand)+'"/></div>'
+    +'<div class="form-row"><label>Model Code</label><input type="text" id="e-model" value="'+esc(s.model||'')+'"/></div>'
+    +'<div class="form-row"><label>Engine</label><input type="text" id="e-engine" value="'+esc(s.engine||'')+'"/></div>'
+    +'<div class="form-row"><label>Power</label><input type="text" id="e-power" value="'+esc(s.power||'')+'"/></div>'
+    +'<div class="form-row"><label>Top Speed</label><input type="text" id="e-topspeed" value="'+esc(s.topSpeed||'')+'"/></div>'
+    +'<div class="form-row"><label>Transmission</label><input type="text" id="e-trans" value="'+esc(s.transmission||'')+'"/></div>'
+    +'<div class="form-row"><label>Brakes</label><input type="text" id="e-brakes" value="'+esc(s.brakes||'')+'"/></div>'
+    +'<div class="form-row"><label>Tires</label><input type="text" id="e-tires" value="'+esc(s.tires||'')+'"/></div>'
+    +'<div class="form-row"><label>Fuel Tank</label><input type="text" id="e-fueltank" value="'+esc(s.fuelTank||'')+'"/></div>'
+    +'<div class="form-row"><label>Fuel Economy</label><input type="text" id="e-mpg" value="'+esc(s.mpg||'')+'"/></div>'
+    +'<div class="form-row"><label>Weight</label><input type="text" id="e-weight" value="'+esc(s.weight||'')+'"/></div>'
+    +'<div class="form-row"><label>Price</label><input type="text" id="e-price" value="'+esc(s.price||'')+'"/></div>'
+    +'</div>'
+    +'<div class="form-row"><label>Description</label><textarea id="e-desc">'+esc(s.desc||'')+'</textarea></div>'
+    +'<div class="form-row"><label>Colors (comma-separated)</label><input type="text" id="e-colors" value="'+(s.colors||[]).join(', ')+'"/></div>'
+    +'<div class="form-row"><label>Units in Stock</label><input type="number" id="e-stock" min="0" value="'+(s.stock||0)+'"/></div>'
+    +'<div class="modal-actions"><button class="btn-cancel" onclick="closeAdmin()">Cancel</button>'
+    +'<button class="btn-add" onclick="saveEdit('+id+')">Save Changes</button></div></div></div>';
+}
+
+function esc(str){ return String(str).replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
+
+function saveEdit(id){
+  var idx = inventory.findIndex(function(x){return x.id===id;});
+  if(idx<0) return;
+  var s = inventory[idx];
+  var eng = document.getElementById('e-engine').value.trim();
+  var cc = /229|250|230|200/.test(eng)?250:/149|150/.test(eng)?150:50;
+  inventory[idx] = Object.assign({}, s, {
+    name:  document.getElementById('e-name').value.trim()||s.name,
+    brand: document.getElementById('e-brand').value.trim()||s.brand,
+    model: document.getElementById('e-model').value.trim()||s.model,
+    engine:eng||s.engine, cc:cc,
+    power:     document.getElementById('e-power').value.trim()||s.power,
+    topSpeed:  document.getElementById('e-topspeed').value.trim()||s.topSpeed,
+    transmission:document.getElementById('e-trans').value.trim()||s.transmission,
+    brakes:    document.getElementById('e-brakes').value.trim()||s.brakes,
+    tires:     document.getElementById('e-tires').value.trim()||s.tires,
+    fuelTank:  document.getElementById('e-fueltank').value.trim()||s.fuelTank,
+    mpg:       document.getElementById('e-mpg').value.trim()||s.mpg,
+    weight:    document.getElementById('e-weight').value.trim()||s.weight,
+    price:     document.getElementById('e-price').value.trim()||s.price,
+    desc:      document.getElementById('e-desc').value.trim(),
+    colors:    document.getElementById('e-colors').value.split(',').map(function(c){return c.trim().toLowerCase();}).filter(Boolean),
+    stock:     parseInt(document.getElementById('e-stock').value)||0
+  });
+  save(); renderCatalog(); closeAdmin();
+  showToast('&#x2713; '+inventory[idx].name+' updated.');
 }
 
 function deleteScooter(id){
